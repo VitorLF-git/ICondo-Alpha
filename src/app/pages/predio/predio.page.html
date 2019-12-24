@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button autoHide="false"></ion-menu-button>
+      
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+          <ion-button>
+            <ion-icon slot="icon-only" name="star"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-title>Left side menu toggle</ion-title>
+      </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item button detail routerLink="/tabs/predio/info" routerDirection="forward">
+      <ion-icon name="cog" slot="start"></ion-icon>
+      Meu perfil
+    </ion-item>
+    <ion-item button detail routerLink="/tabs/predio/garagem" routerDirection="forward">
+      <ion-icon name="car" slot="start"></ion-icon>
+      Garagem
+    </ion-item>
+    <ion-item button detail routerLink="/tabs/predio/salao" routerDirection="forward">
+      <ion-icon name="flag" slot="start"></ion-icon>
+      Agendar Salão de Festas
+    </ion-item>
+  </ion-list>
+  <ion-card id="predioPage-card21">
+    <ion-list>
+      <div style="width:100%;height:220px;margin:0px 0px;line-height:250px;background-color:#e8ebef;text-align:center;">
+        <i class="icon ion-image" style="font-size:64px;color:#888;vertical-align:middle;"></i>
+      </div>
+    </ion-list>
+  </ion-card>
+</ion-content>

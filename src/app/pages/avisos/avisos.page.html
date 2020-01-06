@@ -21,8 +21,8 @@
     </div>
   </div>
   <ion-list>
-    <ion-item button [routerLink]="['/idea', idea.id]" *ngFor="let idea of (ideas | async)">
-      {{ idea.name }}
+    <ion-item button [routerLink]="['/perfil', aviso.id]" *ngFor="let aviso of (avisos | async)">
+      {{ aviso.name }}
     </ion-item>
   </ion-list>
   <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { PortariaDatabaseService, Portaria } from 'src/app/services/portaria-database.service';
 
 @Component({
   selector: 'app-portaria',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PortariaPage implements OnInit {
 
-  constructor() { }
-
+  private portarias: Observable<Portaria[]>;
+ 
+  constructor(private portariaService: PortariaDatabaseService) { }
+ 
   ngOnInit() {
+    this.portarias = this.portariaService.getPortarias();
   }
 
 }

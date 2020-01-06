@@ -3,19 +3,10 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument,
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-export interface Idea {
-  id?: string,
-  name: string,
-  notes: string
-}
-
 export interface User {
   id?: string,
   name: string,
-  surname: string,
-  apt: string,
-  garage: string,
-  email: string
+  notes: string
 }
 
 
@@ -24,12 +15,12 @@ export interface User {
 })
 export class UserDatabaseService {
 
-  private ideas: Observable<Idea[]>;
-  private ideaCollection: AngularFirestoreCollection<Idea>;
+  private users: Observable<User[]>;
+  private userCollection: AngularFirestoreCollection<User>;
  
   constructor(private afs: AngularFirestore) {
-    this.ideaCollection = this.afs.collection<Idea>('ideas');
-    this.ideas = this.ideaCollection.snapshotChanges().pipe(
+    this.userCollection = this.afs.collection<User>('user');
+    this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -40,29 +31,29 @@ export class UserDatabaseService {
     );
   }
  
-  getIdeas(): Observable<Idea[]> {
-    return this.ideas;
+  getUsers(): Observable<User[]> {
+    return this.users;
   }
  
-  getIdea(id: string): Observable<Idea> {
-    return this.ideaCollection.doc<Idea>(id).valueChanges().pipe(
+  getUser(id: string): Observable<User> {
+    return this.userCollection.doc<User>(id).valueChanges().pipe(
       take(1),
-      map(idea => {
-        idea.id = id;
-        return idea
+      map(user => {
+        user.id = id;
+        return user
       })
     );
   }
  
-  addIdea(idea: Idea): Promise<DocumentReference> {
-    return this.ideaCollection.add(idea);
+  addUser(user: User): Promise<DocumentReference> {
+    return this.userCollection.add(user);
   }
  
-  updateIdea(idea: Idea): Promise<void> {
-    return this.ideaCollection.doc(idea.id).update({ name: idea.name, notes: idea.notes });
+  updateUser(user: User): Promise<void> {
+    return this.userCollection.doc(user.id).update({ name: user.name, notes: user.notes });
   }
  
-  deleteIdea(id: string): Promise<void> {
-    return this.ideaCollection.doc(id).delete();
+  deleteUser(id: string): Promise<void> {
+    return this.userCollection.doc(id).delete();
   }
 }

@@ -24,13 +24,6 @@ export class LoginPage implements OnInit {
   ) { }
  
   ngOnInit() {
-/** If credentials are present navigate directly to the app, 
- * the details page will populate itself automactically */
-
- /** If credentials are not present navigate to login page, and when the user login for the first time
- * we will create the credentials, if the user is not in db, we will route to the firstacess page
- */
-    this.router.navigateByUrl('/app');
  
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([

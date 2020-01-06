@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IdeaService, Idea } from 'src/app/services/idea.service';
 
 @Component({
   selector: 'app-avisos',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AvisosPage implements OnInit {
 
-  constructor() { }
-
+  private ideas: Observable<Idea[]>;
+ 
+  constructor(private ideaService: IdeaService) { }
+ 
   ngOnInit() {
+    this.ideas = this.ideaService.getIdeas();
   }
 
 }

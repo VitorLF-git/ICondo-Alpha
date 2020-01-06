@@ -20,7 +20,11 @@
       </p>
     </div>
   </div>
-  <div class="spacer" style="width:100px;height:100px;"></div>
+  <ion-list>
+    <ion-item button [routerLink]="['/idea', idea.id]" *ngFor="let idea of (ideas | async)">
+      {{ idea.name }}
+    </ion-item>
+  </ion-list>
   <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">
     Informar ocorrido
   </ion-button>

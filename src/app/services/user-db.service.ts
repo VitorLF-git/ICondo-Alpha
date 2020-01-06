@@ -6,13 +6,10 @@ import { map } from 'rxjs/operators';
 /** Copy from https://devdactic.com/ionic-4-firebase-angularfire/ */
 /** We need to create a db with multiple spaces (email, name, surname, etc just not the password) */
 
-export interface User {
+export interface Todo {
   id?: string;
-  name: string;
-  email: string;
-  type: string;
-  parking: string;
-  apt: string;
+  task: string;
+  priority: number;
   createdAt: number;
 }
 
@@ -21,14 +18,14 @@ export interface User {
 })
 export class UserDbService {
   
-  private userCollection: AngularFirestoreCollection<User>;
+  private todosCollection: AngularFirestoreCollection<Todo>;
  
-  private users: Observable<User[]>;
+  private todos: Observable<Todo[]>;
  
   constructor(db: AngularFirestore) {
-    this.userCollection = db.collection<User>('user');
+    this.todosCollection = db.collection<Todo>('todos');
  
-    this.users = this.userCollection.snapshotChanges().pipe(
+    this.todos = this.todosCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -39,23 +36,23 @@ export class UserDbService {
     );
   }
  
-  getUsers() {
-    return this.users;
+  getTodos() {
+    return this.todos;
   }
  
-  getUser(id) {
-    return this.userCollection.doc<User>(id).valueChanges();
+  getTodo(id) {
+    return this.todosCollection.doc<Todo>(id).valueChanges();
   }
  
-  updateUser(user: User, id: string) {
-    return this.userCollection.doc(id).update(user);
+  updateTodo(todo: Todo, id: string) {
+    return this.todosCollection.doc(id).update(todo);
   }
  
-  addUser(user: User) {
-    return this.userCollection.add(user);
+  addTodo(todo: Todo) {
+    return this.todosCollection.add(todo);
   }
  
-  removeUser(id) {
-    return this.userCollection.doc(id).delete();
+  removeTodo(id) {
+    return this.todosCollection.doc(id).delete();
   }
 }

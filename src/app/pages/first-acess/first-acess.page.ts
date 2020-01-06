@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, LoadingController } from '@ionic/angular';
-import { User, UserDbService } from 'src/app/services/user-db.service';
+import { Todo, UserDbService } from 'src/app/services/user-db.service';
 
 @Component({
   selector: 'app-first-acess',
@@ -9,53 +9,49 @@ import { User, UserDbService } from 'src/app/services/user-db.service';
   styleUrls: ['./first-acess.page.scss'],
 })
 export class FirstAcessPage implements OnInit { 
-  user: User = {
-    name: "Nome",
-    email: "naoexiste@gmail.com",
-    type: "Morador",
-    parking: "0",
-    apt: "0",
+  todo: Todo = {
+    task: 'test',
     createdAt: new Date().getTime(),
-    
+    priority: 2
   };
  
-  userId = null;
+  todoId = null;
  
-  constructor(private route: ActivatedRoute, private nav: NavController, private userService: UserDbService, private loadingController: LoadingController) { }
+  constructor(private route: ActivatedRoute, private nav: NavController, private todoService: UserDbService, private loadingController: LoadingController) { }
  
   ngOnInit() {
-    this.userId = this.route.snapshot.params['id'];
-    if (this.userId)  {
-      this.loadUser();
+    this.todoId = this.route.snapshot.params['id'];
+    if (this.todoId)  {
+      this.loadTodo();
     }
   }
  
-  async loadUser() {
+  async loadTodo() {
     const loading = await this.loadingController.create({
-      message: 'Loading User..'
+      message: 'Loading Todo..'
     });
     await loading.present();
  
-    this.userService.getUser(this.userId).subscribe(res => {
+    this.todoService.getTodo(this.todoId).subscribe(res => {
       loading.dismiss();
-      this.user = res;
+      this.todo = res;
     });
   }
  
-  async saveUser() {
+  async saveTodo() {
  
     const loading = await this.loadingController.create({
-      message: 'Saving User..'
+      message: 'Saving Todo..'
     });
     await loading.present();
  
-    if (this.userId) {
-      this.userService.updateUser(this.user, this.userId).then(() => {
+    if (this.todoId) {
+      this.todoService.updateTodo(this.todo, this.todoId).then(() => {
         loading.dismiss();
         /** this.nav.back('home'); ROUTE TO APP, SAME AS LOGIN */
       });
     } else {
-      this.userService.addUser(this.user).then(() => {
+      this.todoService.addTodo(this.todo).then(() => {
         loading.dismiss();
         /**this.nav.goBack('home'); ROUTE TO APP, SAME AS LOGIN*/
       });

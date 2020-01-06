@@ -7,7 +7,7 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
-    path: 'www',
+    path: 'app2',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
@@ -20,10 +20,6 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./pages/first-acess/first-acess.module').then( m => m.FirstAcessPageModule)
-  },
-  {
-    path: 'first/:id',
     loadChildren: () => import('./pages/first-acess/first-acess.module').then( m => m.FirstAcessPageModule)
   }
 ];

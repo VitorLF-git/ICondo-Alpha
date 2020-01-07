@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AvisoDatabaseService, Aviso } from 'src/app/services/aviso-database.service';
+import { AvisoDatabaseService, Aviso } from 'src/app/services/db-services/aviso-database.service';
 
 @Component({
   selector: 'app-avisos',

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PortariaDatabaseService, Portaria } from 'src/app/services/portaria-database.service';
+import { PortariaDatabaseService, Portaria } from 'src/app/services/db-services/portaria-database.service';
 
 @Component({
   selector: 'app-portaria',

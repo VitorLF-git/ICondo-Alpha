@@ -3,7 +3,8 @@ import * as firebase from 'firebase/app';
  
 @Injectable()
 export class AuthenticateService {
- 
+
+  userEmail = "email";
   constructor(){}
  
   registerUser(value){
@@ -41,5 +42,9 @@ export class AuthenticateService {
   userDetails(){
     return firebase.auth().currentUser;
   }
+
+
+
+
 }
  

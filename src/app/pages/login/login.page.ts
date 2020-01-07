@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { NavController } from '@ionic/angular';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
+  userEmail: string = '';
+  userToken: string = '';
 
   validations_form: FormGroup;
   errorMessage: string = '';
@@ -35,7 +39,14 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+    
+
+    
+
+    
+    
   }
+
  
  
   validation_messages = {
@@ -51,13 +62,15 @@ export class LoginPage implements OnInit {
  
  
   loginUser(value){
+
     this.authService.loginUser(value)
     .then(res => {
       console.log(res);
       this.errorMessage = "";
       this.router.navigateByUrl('/app');
     }, err => {
-      this.errorMessage = err.message;
+      this.errorMessage = "Por favor verifique se o email e a senha estão digitados corretamente! (" + err.code + ")";
+      
     })
   }
  

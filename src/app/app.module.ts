@@ -25,10 +25,14 @@ firebase.initializeApp(environment.firebase);
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireAuthModule, ReactiveFormsModule,
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
+    /** Firebase Auth Modules */
+    AngularFireAuthModule, ReactiveFormsModule,
+    /** Firebase Auth Modules end */
     /** Firebase Db Modules */
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule],
+    /** Firebase Db Modules end */
   providers: [
     StatusBar,
     SplashScreen,

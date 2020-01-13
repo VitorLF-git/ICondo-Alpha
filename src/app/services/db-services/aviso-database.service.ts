@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 export interface Aviso {
   id?: string,
   name: string,
-  notes: string
+  notes: string,
+  email: string
 }
 
 

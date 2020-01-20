@@ -32,7 +32,7 @@ export class AppComponent {
           this.splashScreen.hide();
         }
         else {
-          this.router.navigate(["/"]);
+          
           this.splashScreen.hide();
         }
       })

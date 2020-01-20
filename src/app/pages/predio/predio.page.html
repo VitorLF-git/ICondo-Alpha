@@ -26,7 +26,14 @@
       <ion-icon name="flag" slot="start"></ion-icon>
       Agendar Salão de Festas
     </ion-item>
+    <ion-item button (click)="logout()" color="danger">
+      <ion-icon name="flag" slot="start"></ion-icon>
+      Desconectar
+    </ion-item>
   </ion-list>
+  <ion-col text-center>
+    Your Registered EmailID : {{userEmail}}
+  </ion-col>
   <ion-card id="predioPage-card21">
     <ion-list>
       <div style="width:100%;height:220px;margin:0px 0px;line-height:250px;background-color:#e8ebef;text-align:center;">

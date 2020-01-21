@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { IfStmt } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-login',
@@ -17,18 +18,23 @@ export class LoginPage implements OnInit {
 
   validations_form: FormGroup;
   errorMessage: string = '';
- 
+
   constructor(
- 
+
     private navCtrl: NavController,
     private router: Router,
     private authService: AuthenticateService,
-    private formBuilder: FormBuilder
- 
+    private formBuilder: FormBuilder,
+    private loadingController: LoadingController
+
   ) { }
- 
+
   ngOnInit() {
- 
+
+    /**this.presentLoading(); */
+
+
+
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -39,16 +45,31 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
-    
 
-    
 
-    
-    
+
+
+
+
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loading Todo..'
+    });
+    await loading.present();
+
+    if(this.authService.userDetails == null)
+    {
+      loading.dismiss();
+    }
  
- 
+      
+
+  }
+
+
+
   validation_messages = {
     'email': [
       { type: 'required', message: 'Por favor informe o email!' },
@@ -59,23 +80,23 @@ export class LoginPage implements OnInit {
       { type: 'minlength', message: 'A senha deve ter pelo menos 6 caracteres!' }
     ]
   };
- 
- 
-  loginUser(value){
+
+
+  loginUser(value) {
 
     this.authService.loginUser(value)
-    .then(res => {
-      console.log(res);
-      this.errorMessage = "";
-      this.router.navigateByUrl('/app');
-    }, err => {
-      this.errorMessage = "Por favor verifique se o email e a senha estão digitados corretamente! (" + err.code + ")";
-      
-    })
+      .then(res => {
+        console.log(res);
+        this.errorMessage = "";
+        this.router.navigateByUrl('/app');
+      }, err => {
+        this.errorMessage = "Por favor verifique se o email e a senha estão digitados corretamente! (" + err.code + ")";
+
+      })
   }
- 
-  goToRegisterPage(){
+
+  goToRegisterPage() {
     this.navCtrl.navigateForward('/register');
   }
- 
+
 }

@@ -3,6 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument,
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+import { AuthenticateService } from 'src/app/services/authentication.service';
+
 export interface Aviso {
   id?: string,
   name: string,
@@ -15,13 +17,19 @@ export interface Aviso {
   providedIn: 'root'
 })
 export class AvisoDatabaseService {
+  
 
-
+  userEmail: string;
   private avisos: Observable<Aviso[]>;
   private avisoCollection: AngularFirestoreCollection<Aviso>;
- 
-  constructor(private afs: AngularFirestore) {
-    this.avisoCollection = this.afs.collection<Aviso>('aviso');
+
+  constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
+    if(this.authService.userDetails()){
+      this.userEmail = this.authService.userDetails().email;
+      this.authService.userDetails().getIdToken;
+    }else{
+    }
+    this.avisoCollection = this.afs.collection<Aviso>('aviso', ref => ref.where('email', '==', this.userEmail));
     this.avisos = this.avisoCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -32,11 +40,11 @@ export class AvisoDatabaseService {
       })
     );
   }
- 
+
   getAvisos(): Observable<Aviso[]> {
     return this.avisos;
   }
- 
+
   getAviso(id: string): Observable<Aviso> {
     return this.avisoCollection.doc<Aviso>(id).valueChanges().pipe(
       take(1),
@@ -46,16 +54,18 @@ export class AvisoDatabaseService {
       })
     );
   }
- 
+
   addAviso(aviso: Aviso): Promise<DocumentReference> {
     return this.avisoCollection.add(aviso);
   }
- 
+
   updateAviso(aviso: Aviso): Promise<void> {
     return this.avisoCollection.doc(aviso.id).update({ name: aviso.name, notes: aviso.notes });
   }
- 
+
   deleteAviso(id: string): Promise<void> {
     return this.avisoCollection.doc(id).delete();
   }
+
+  
 }

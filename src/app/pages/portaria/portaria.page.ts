@@ -12,7 +12,7 @@ import { AuthenticateService } from 'src/app/services/authentication.service';
 export class PortariaPage implements OnInit {
 
   userEmail: string;
-  userToken: string = '';
+  
 
 
   private portarias: Observable<Portaria[]>;
@@ -27,7 +27,6 @@ export class PortariaPage implements OnInit {
 
     if(this.authService.userDetails()){
       this.userEmail = this.authService.userDetails().email;
-      this.authService.userDetails().getIdToken;
     }else{
     }
   }

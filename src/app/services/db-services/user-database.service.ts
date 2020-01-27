@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AuthenticateService } from '../authentication.service';
 
 export interface User {
   id?: string,
@@ -15,11 +16,18 @@ export interface User {
 })
 export class UserDatabaseService {
 
+
+  userEmail: string;
   private users: Observable<User[]>;
   private userCollection: AngularFirestoreCollection<User>;
  
-  constructor(private afs: AngularFirestore) {
-    this.userCollection = this.afs.collection<User>('user');
+  constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
+    if(this.authService.userDetails()){
+      this.userEmail = this.authService.userDetails().email;
+      this.authService.userDetails().getIdToken;
+    }else{
+    }
+    this.userCollection = this.afs.collection<User>('user', ref => ref.where('email', '==', this.userEmail));
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

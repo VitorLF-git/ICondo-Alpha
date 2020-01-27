@@ -43,14 +43,16 @@ export class AppComponent {
     this.fireAuth.auth.onAuthStateChanged(user => {
       if (user) {
         this.router.navigate(["/app"]);
+        loading.dismiss();
         this.splashScreen.hide();
         this.statusBar.styleDefault();
       }
       else {
+        loading.dismiss();
 
       }
     })
-    loading.dismiss();
+    
   }
 
 }

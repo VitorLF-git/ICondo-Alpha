@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
-    /**this.presentLoading(); */
+    
 
 
 
@@ -59,12 +59,10 @@ export class LoginPage implements OnInit {
     });
     await loading.present();
 
-    if(this.authService.userDetails == null)
-    {
-      loading.dismiss();
-    }
- 
-      
+
+    loading.dismiss();
+
+
 
   }
 

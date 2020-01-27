@@ -7,6 +7,10 @@ import { AuthenticateService } from '../authentication.service';
 export interface User {
   id?: string,
   name: string,
+  email: string,
+  apt: string,
+  garage: string,
+  type: string,
   notes: string
 }
 
@@ -17,7 +21,7 @@ export interface User {
 export class UserDatabaseService {
 
 
-  userEmail: string;
+  userEmail: string="";
   private users: Observable<User[]>;
   private userCollection: AngularFirestoreCollection<User>;
  

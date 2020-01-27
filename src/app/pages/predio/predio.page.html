@@ -34,6 +34,14 @@
   <ion-col text-center>
     Your Registered EmailID : {{userEmail}}
   </ion-col>
+  <ion-list>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      User Name: {{ user.name }}
+      User Email: {{ user.email }}
+      User type: {{ user.type }}
+
+    </ion-item>
+  </ion-list>
   <ion-card id="predioPage-card21">
     <ion-list>
       <div style="width:100%;height:220px;margin:0px 0px;line-height:250px;background-color:#e8ebef;text-align:center;">

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
+import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
+import { Observable } from 'rxjs';
+import { ToastController } from '@ionic/angular';
  
 @Component({
   selector: 'app-register',
@@ -9,6 +12,19 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+
+  user: User = {
+
+    name: '',
+    email: '',
+    apt: '',
+    garage: '',
+    type: 'morador',
+    notes: '',
+  };
+
+  private users: Observable<User[]>;
+
  
  
   validations_form: FormGroup;
@@ -29,7 +45,9 @@ export class RegisterPage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticateService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private userdatabaseservice: UserDatabaseService,
+    private toastCtrl: ToastController
   ) {}
  
   ngOnInit(){
@@ -42,7 +60,19 @@ export class RegisterPage implements OnInit {
         Validators.minLength(6),
         Validators.required
       ])),
+      
     });
+  }
+
+  saveOnDB(value){
+    this.user.email = this.validations_form.controls['email'].value
+    this.userdatabaseservice.addUser(this.user).then(() => {
+      this.showToast('Criação de usuário concluida');
+    }, err => {
+      this.showToast('ERRO: POR FAVOR ENTRE EM CONTATO COM O SINDÍCO');
+    });
+    this.tryRegister(value);
+
   }
  
   tryRegister(value){
@@ -62,5 +92,11 @@ export class RegisterPage implements OnInit {
     this.navCtrl.navigateBack('');
   }
  
+  showToast(msg) {
+    this.toastCtrl.create({
+      message: msg,
+      duration: 2000
+    }).then(toast => toast.present());
+  }
  
 }

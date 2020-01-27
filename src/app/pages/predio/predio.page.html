@@ -37,9 +37,15 @@
   <ion-list>
     <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
       User Name: {{ user.name }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      User Apt: {{ user.apt }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      User Type: {{ user.type }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
       User Email: {{ user.email }}
-      User type: {{ user.type }}
-
     </ion-item>
   </ion-list>
   <ion-card id="predioPage-card21">

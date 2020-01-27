@@ -65,6 +65,7 @@ export class RegisterPage implements OnInit {
   }
 
   saveOnDB(value){
+    /** It would be better to do the same thing you're doing for the email to name and apt! */
     this.user.email = this.validations_form.controls['email'].value
     this.userdatabaseservice.addUser(this.user).then(() => {
       this.showToast('Criação de usuário concluida');

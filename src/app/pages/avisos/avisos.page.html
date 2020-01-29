@@ -16,16 +16,24 @@
   <div id="avisosPage-container3">
     <div id="avisosPage-markdown14" class="show-list-numbers-and-dots">
       <p style="color:#000000;">
-        
+
       </p>
     </div>
   </div>
   <ion-list>
-    <ion-item button [routerLink]="['/perfil', aviso.id]" *ngFor="let aviso of (avisos | async)">
-      {{ aviso.name }}
-    </ion-item>
-  </ion-list>
+  <ion-card *ngFor="let aviso of (avisos | async)">
+    <ion-card-header>
+      <ion-card-subtitle >{{aviso.category}}</ion-card-subtitle>
+      <ion-card-title >{{aviso.title}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content >
+      {{aviso.content}}
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+
   <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">
-    Informar ocorrido
+    Informar acontecimentos
   </ion-button>
 </ion-content>

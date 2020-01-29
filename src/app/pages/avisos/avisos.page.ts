@@ -10,9 +10,9 @@ import { AvisoDatabaseService, Aviso } from 'src/app/services/db-services/aviso-
 export class AvisosPage implements OnInit {
 
   private avisos: Observable<Aviso[]>;
- 
+
   constructor(private avisoService: AvisoDatabaseService) { }
- 
+
   ngOnInit() {
     this.avisos = this.avisoService.getAvisos();
   }

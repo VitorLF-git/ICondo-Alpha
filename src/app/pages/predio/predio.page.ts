@@ -23,6 +23,8 @@ export class PredioPage implements OnInit {
     notes: '',
   };
 
+  
+
   private users: Observable<User[]>;
 
 
@@ -36,7 +38,7 @@ export class PredioPage implements OnInit {
   ngOnInit() {
     this.userEmail = this.authService.userDetails().email;
 
-    this.users = this.userDatabaseService.getUsers();
+    this.users = this.userDatabaseService.getUsersByApt("100");
   }
 
   logout() {

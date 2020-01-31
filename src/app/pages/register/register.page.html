@@ -11,7 +11,7 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating" color="primary">Apartamento</ion-label>
-    <ion-input [(ngModel)]="user.apt" type="number"></ion-input>
+    <ion-input [(ngModel)]="user.apt"></ion-input>
   </ion-item>
   <form class="form" [formGroup]="validations_form" (ngSubmit)="saveOnDB(validations_form.value)">
 

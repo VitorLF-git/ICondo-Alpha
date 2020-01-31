@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PrimeiroAcessoPageRoutingModule } from './primeiro-acesso-routing.module';
+import { PortariaPageRoutingModule } from './portaria-routing.module';
 
-import { PrimeiroAcessoPage } from './primeiro-acesso.page';
+import { PortariaPage } from './portaria.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PrimeiroAcessoPageRoutingModule
+    PortariaPageRoutingModule
   ],
-  declarations: [PrimeiroAcessoPage]
+  declarations: [PortariaPage]
 })
-export class PrimeiroAcessoPageModule {}
+export class PortariaPageModule {}

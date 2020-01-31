@@ -21,16 +21,44 @@ export interface User {
 export class UserDatabaseService {
 
 
-  userEmail: string="";
+  userEmail: string = "";
   private users: Observable<User[]>;
   private userCollection: AngularFirestoreCollection<User>;
- 
+
   constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
-    if(this.authService.userDetails()){
+    if (this.authService.userDetails()) {
       this.userEmail = this.authService.userDetails().email;
       this.authService.userDetails().getIdToken;
-    }else{
+    } else {
     }
+
+  }
+
+  getUsers(): Observable<User[]> {
+    this.getUsersByEmail();
+    return this.users;
+  }
+
+  getUsersByApt(apt: string) {
+    this.userCollection = this.afs.collection<User>('user', ref => ref.where('apt', '==', apt));
+    this.users = this.userCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+
+    console.log(this.users);
+    
+
+    return this.users;
+  }
+
+  getUsersByEmail() {
+
     this.userCollection = this.afs.collection<User>('user', ref => ref.where('email', '==', this.userEmail));
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
@@ -42,11 +70,7 @@ export class UserDatabaseService {
       })
     );
   }
- 
-  getUsers(): Observable<User[]> {
-    return this.users;
-  }
- 
+
   getUser(id: string): Observable<User> {
     return this.userCollection.doc<User>(id).valueChanges().pipe(
       take(1),
@@ -56,16 +80,21 @@ export class UserDatabaseService {
       })
     );
   }
- 
+
   addUser(user: User): Promise<DocumentReference> {
+    this.getUsersByEmail();
     return this.userCollection.add(user);
   }
- 
+
   updateUser(user: User): Promise<void> {
+    this.getUsersByEmail();
+
     return this.userCollection.doc(user.id).update({ name: user.name, notes: user.notes });
   }
- 
+
   deleteUser(id: string): Promise<void> {
+    this.getUsersByEmail();
+
     return this.userCollection.doc(id).delete();
   }
 }

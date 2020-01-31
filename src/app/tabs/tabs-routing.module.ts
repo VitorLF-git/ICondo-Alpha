@@ -46,6 +46,11 @@ const routes: Routes = [
             path: '',
             loadChildren: () =>
               import('../pages/portaria/portaria.module').then(m => m.PortariaPageModule)
+          },
+          {
+            path: 'novo',
+            loadChildren: () =>
+              import('../pages/portaria-novo-aviso/portaria-novo-aviso.module').then(m => m.PortariaNovoAvisoPageModule)
           }
         ]
       },

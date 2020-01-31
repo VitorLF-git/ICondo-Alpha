@@ -21,11 +21,10 @@ const routes: Routes = [
   {
     path: 'perfil',
     loadChildren: () => import('./pages/perfil/perfil.module').then( m => m.PerfilPageModule)
-  },
-  {
-    path: 'first',
-    loadChildren: () => import('./pages/primeiro-acesso/primeiro-acesso.module').then( m => m.PrimeiroAcessoPageModule)
   }
+
+ 
+
 
 ];
 @NgModule({

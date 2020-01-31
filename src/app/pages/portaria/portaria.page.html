@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content padding id="page3">
   <h1 id="portariaPage-heading1" style="color:#000000;">
-    Ramal 332 {{userEmail}}
+    Ramal 332
   </h1>
   <ion-list id="portariaPage-list3">
     <ion-item color="none" id="portariaPage-list-item19">
@@ -16,9 +16,12 @@
       Portaria
     </ion-item>
     <ion-list>
-      <ion-item button [routerLink]="['/perfil', portaria.id]" *ngFor="let portaria of (portarias | async)">
-        {{ portaria.name }}
+      <ion-item *ngFor="let portaria of (portarias | async)">
+        {{ portaria.content }}
       </ion-item>
     </ion-list>
   </ion-list>
+  <ion-button color="primary" detail routerLink="/app/portaria/novo" routerDirection="forward">
+    Informar acontecimentos
+  </ion-button>
 </ion-content>

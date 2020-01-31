@@ -4,7 +4,7 @@
       <ion-back-button defaultHref="/app/avisos"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      Portaria
+      Confirmation
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,7 +21,14 @@
     <ion-label position="stacked">Aviso</ion-label>
     <ion-input [(ngModel)]="portaria.content" placeholder="Escreva Aqui"></ion-input>
   </ion-item>
-  
+  <ion-item>
+    <ion-label position="stacked">Email</ion-label>
+    <ion-input [(ngModel)]="portaria.email" *ngFor="let user of (users | async)"></ion-input>
+      {{ user.email }}
+  </ion-item>
+  <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+    User Email: {{ user.email }}
+  </ion-item>
   <ion-toolbar color="success">
     <ion-button expand="full" fill="clear" color="light" (click)="createAviso()" routerLink="/app/portaria"
       routerDirection="back">

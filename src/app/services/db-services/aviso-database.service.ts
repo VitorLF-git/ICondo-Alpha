@@ -21,7 +21,7 @@ export interface Aviso {
   providedIn: 'root'
 })
 export class AvisoDatabaseService {
- 
+
 
   userEmail: string;
   private avisos: Observable<Aviso[]>;
@@ -31,7 +31,6 @@ export class AvisoDatabaseService {
   constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
     if (this.authService.userDetails()) {
       this.userEmail = this.authService.userDetails().email;
-      this.authService.userDetails().getIdToken;
     } else {
     }
 
@@ -42,7 +41,7 @@ export class AvisoDatabaseService {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          return { id, ...data};
+          return { id, ...data };
         });
       })
     );

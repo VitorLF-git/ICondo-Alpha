@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="success">
         <ion-buttons slot="start">
           <ion-menu-button autoHide="false"></ion-menu-button>
       
@@ -15,7 +15,7 @@
 <ion-content>
   <ion-list>
     <ion-item button detail routerLink="/app/predio/info" routerDirection="forward">
-      <ion-icon name="cog" slot="start"></ion-icon>
+      <ion-icon name="person" slot="start"></ion-icon>
       Meu perfil
     </ion-item>
     <ion-item button detail routerLink="/app/predio/garagem" routerDirection="forward">
@@ -27,14 +27,14 @@
       Agendar Salão de Festas
     </ion-item>
     <ion-item button (click)="logout()" color="danger">
-      <ion-icon name="flag" slot="start"></ion-icon>
+      <ion-icon name="alert" slot="start"></ion-icon>
       Desconectar
     </ion-item>
   </ion-list>
-  <ion-col text-center>
-    Your Registered EmailID : {{userEmail}}
+  <ion-col class="ion-text-center">
+    {{userEmail}}
   </ion-col>
-  <ion-list>
+  <!-- <ion-list>
     <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
       User Name: {{ user.name }}
     </ion-item>
@@ -47,12 +47,6 @@
     <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
       User Email: {{ user.email }}
     </ion-item>
-  </ion-list>
-  <ion-card id="predioPage-card21">
-    <ion-list>
-      <div style="width:100%;height:220px;margin:0px 0px;line-height:250px;background-color:#e8ebef;text-align:center;">
-        <i class="icon ion-image" style="font-size:64px;color:#888;vertical-align:middle;"></i>
-      </div>
-    </ion-list>
-  </ion-card>
+  </ion-list> -->
+  
 </ion-content>

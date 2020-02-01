@@ -36,9 +36,10 @@ export class PredioPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.userEmail = this.authService.userDetails().email;
 
-    this.users = this.userDatabaseService.getUsersByApt("100");
+    this.users = this.userDatabaseService.getUsers();
   }
 
   logout() {

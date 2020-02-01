@@ -1,27 +1,33 @@
 <ion-header>
-  <ion-toolbar color='primary'>
+  <ion-toolbar color="success">
 
     <ion-title>
       Portaria
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding id="page3">
-  <h1 id="portariaPage-heading1" style="color:#000000;">
-    Ramal 332
-  </h1>
-  <ion-list id="portariaPage-list3">
-    <ion-item color="none" id="portariaPage-list-item19">
-      <ion-icon name="information" slot="start"></ion-icon>
-      Portaria
-    </ion-item>
-    <ion-list>
-      <ion-item *ngFor="let portaria of (portarias | async)">
-        {{ portaria.content }}
-      </ion-item>
-    </ion-list>
+<ion-content class="ion-padding" id="page3">
+  <ion-item color="medium">
+    
+      Ramal 332
+    
+  </ion-item>
+  <ion-list *ngFor="let user of (users | async)">
+    <ion-button *ngIf="user.type != 'morador'" color="primary" detail routerLink="/app/portaria/novo"
+      routerDirection="forward">
+      Avisar Morador
+    </ion-button>
   </ion-list>
-  <ion-button color="primary" detail routerLink="/app/portaria/novo" routerDirection="forward">
-    Informar acontecimentos
-  </ion-button>
+  <ion-item color="primary">
+    <ion-icon name="person" slot="start"></ion-icon>
+    Avisos recentes
+  </ion-item>
+  <!-- Add if content = '1' or '2' or '3', to display customized messages, that can easily include images -->
+  <ion-list>
+    <ion-item *ngFor="let portaria of (portarias | async)">
+      <ion-icon slot="start"></ion-icon>
+      {{ portaria.content }}
+    </ion-item>
+  </ion-list>
+
 </ion-content>

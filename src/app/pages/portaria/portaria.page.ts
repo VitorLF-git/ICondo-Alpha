@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PortariaDatabaseService, Portaria } from 'src/app/services/db-services/portaria-database.service';
 import { AuthenticateService } from 'src/app/services/authentication.service';
+import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -13,22 +15,38 @@ export class PortariaPage implements OnInit {
 
   userEmail: string;
   
+  user: User = {
 
+    name: '',
+    email: '',
+    apt: '',
+    garage: '',
+    type: 'morador',
+    notes: '',
+  };
+  private users: Observable<User[]>;
 
   private portarias: Observable<Portaria[]>;
  
   constructor(
     private portariaService: PortariaDatabaseService,
-    private authService: AuthenticateService
+    private userDatabaseService: UserDatabaseService,
+    private authService: AuthenticateService,
+    private navCtrl: NavController
     ) { }
  
   ngOnInit() {
+
+    
     this.portarias = this.portariaService.getPortarias();
+    
 
     if(this.authService.userDetails()){
       this.userEmail = this.authService.userDetails().email;
     }else{
     }
+
+    this.users = this.userDatabaseService.getUsers();
   }
 
 }

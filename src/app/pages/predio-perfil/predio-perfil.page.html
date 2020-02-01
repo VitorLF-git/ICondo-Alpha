@@ -1,22 +1,38 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="success">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/app/predio"></ion-back-button>
     </ion-buttons>
-    <ion-title>
-     Minhas Informações
+    <ion-title >
+      Minhas Informações
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content padding id="page8">
-  <img src="assets/img/jpuD6CpTGK5pkbZSvWQP_Fotovitor.jpeg"
+<ion-content fullscreen>
+  <ion-card *ngFor="let user of (users | async)"> 
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSjFa4RY7j87DFASh3gPwMWQkbmRs5IRiAhHCDAfYlBsSA_Qpiz" />
+    <ion-card-header>
+      <ion-card-subtitle>Condomínio flores</ion-card-subtitle>
+      <ion-card-title>{{ user.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Apartamento: {{ user.apt }}
+    </ion-card-content>
+  </ion-card>
+  <!-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSjFa4RY7j87DFASh3gPwMWQkbmRs5IRiAhHCDAfYlBsSA_Qpiz"
     style="display:block;width:50%;height:auto;margin-left:auto;margin-right:auto;" />
-  <h1 id="perfilPage-heading3" style="color:#000000;">
-    (Nome)
-  </h1>
-  <div id="perfilPage-markdown17" class="show-list-numbers-and-dots">
-    <p style="color:#000000;">
-      (Apt) (Vaga) (Ramal)
-    </p>
-  </div>
+  <ion-list>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      {{ user.name }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      Apartamento: {{ user.apt }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      {{ user.type }}
+    </ion-item>
+    <ion-item button [routerLink]="['/perfil', user.id]" *ngFor="let user of (users | async)">
+      Email: {{ user.email }}
+    </ion-item>
+  </ion-list> -->
 </ion-content>

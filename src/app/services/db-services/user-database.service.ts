@@ -3,6 +3,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument,
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AuthenticateService } from '../authentication.service';
+import * as firebase from 'firebase';
+
 
 export interface User {
   id?: string,
@@ -11,7 +13,8 @@ export interface User {
   apt: string,
   garage: string,
   type: string,
-  notes: string
+  notes: string,
+  date: any
 }
 
 
@@ -26,11 +29,7 @@ export class UserDatabaseService {
   private userCollection: AngularFirestoreCollection<User>;
 
   constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
-    if (this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-      this.authService.userDetails().getIdToken;
-    } else {
-    }
+    
 
   }
 
@@ -40,6 +39,13 @@ export class UserDatabaseService {
   }
 
   getUsersByApt(apt: string) {
+    
+    if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+      this.authService.userDetails().getIdToken;
+    } else {
+    }
+
     this.userCollection = this.afs.collection<User>('user', ref => ref.where('apt', '==', apt));
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
@@ -58,6 +64,12 @@ export class UserDatabaseService {
   }
 
   getUsersByEmail() {
+
+    if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+      this.authService.userDetails().getIdToken;
+    } else {
+    }
 
     this.userCollection = this.afs.collection<User>('user', ref => ref.where('email', '==', this.userEmail));
     this.users = this.userCollection.snapshotChanges().pipe(
@@ -83,6 +95,7 @@ export class UserDatabaseService {
 
   addUser(user: User): Promise<DocumentReference> {
     this.getUsersByEmail();
+    user.date = firebase.firestore.FieldValue.serverTimestamp();
     return this.userCollection.add(user);
   }
 

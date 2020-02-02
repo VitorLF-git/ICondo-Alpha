@@ -4,6 +4,8 @@ import { NavController, LoadingController } from '@ionic/angular';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { IfStmt } from '@angular/compiler';
+import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -12,6 +14,18 @@ import { IfStmt } from '@angular/compiler';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
+  user: User = {
+    name: '',
+    email: '',
+    apt: '',
+    garage: '',
+    type: 'morador',
+    notes: '',
+    date: "no date"
+  };
+
+  private users: Observable<User[]>;
 
   userEmail: string = '';
   userToken: string = '';
@@ -25,9 +39,12 @@ export class LoginPage implements OnInit {
     private router: Router,
     private authService: AuthenticateService,
     private formBuilder: FormBuilder,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private userDatabaseService: UserDatabaseService,
 
   ) { }
+
+
 
   ngOnInit() {
 
@@ -42,6 +59,20 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+
+
+  }
+
+  ngViewDidEnter() {
+
+    this.userEmail = this.authService.userDetails().email;
+
+
+    if (this.authService.userDetails() != null) {
+      this.router.navigateByUrl('/app');
+    }
+
+
 
 
   }

@@ -4,6 +4,7 @@ import { AuthenticateService } from 'src/app/services/authentication.service';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-predio',
@@ -21,9 +22,10 @@ export class PredioPage implements OnInit {
     garage: '',
     type: 'morador',
     notes: '',
+    date: "no date"
   };
 
-  
+
 
   private users: Observable<User[]>;
 
@@ -36,10 +38,11 @@ export class PredioPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     this.userEmail = this.authService.userDetails().email;
 
     this.users = this.userDatabaseService.getUsers();
+
   }
 
   logout() {

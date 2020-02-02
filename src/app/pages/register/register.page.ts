@@ -19,8 +19,9 @@ export class RegisterPage implements OnInit {
     email: '',
     apt: '',
     garage: '',
-    type: 'morador',
+    type: 'sindico',
     notes: '',
+    date: "no date"
   };
 
   private users: Observable<User[]>;

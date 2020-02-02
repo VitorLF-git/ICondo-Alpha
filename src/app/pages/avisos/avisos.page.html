@@ -5,35 +5,25 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" id="page4">
-  <div id="avisosPage-container2">
-    <ion-list id="avisosPage-list4">
-      <ion-item color="none" id="avisosPage-list-item22">
-        Avisos
-      </ion-item>
-    </ion-list>
-  </div>
-  <div id="avisosPage-container3">
-    <div id="avisosPage-markdown14" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">
-
-      </p>
-    </div>
-  </div>
-  <ion-list>
-  <ion-card *ngFor="let aviso of (avisos | async)">
-    <ion-card-header>
-      <ion-card-subtitle >{{aviso.category}}</ion-card-subtitle>
-      <ion-card-title >{{aviso.title}}</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content >
-      {{aviso.content}}
-    </ion-card-content>
-  </ion-card>
-</ion-list>
-
+<ion-content class="ion-padding">
+  <ion-item color="none">
+    Avisos
+  </ion-item>
   <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">
     Informar acontecimentos
   </ion-button>
+  <ion-list>
+    <ion-card *ngFor="let aviso of (avisos | async)">
+      <ion-card-header>
+        <ion-card-subtitle>{{aviso.category}}</ion-card-subtitle>
+        <ion-card-title>{{aviso.title}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{aviso.content}}
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  
 </ion-content>

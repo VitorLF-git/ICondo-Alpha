@@ -22,6 +22,8 @@ export class PredioPerfilPage implements OnInit {
     garage: '',
     type: 'morador',
     notes: '',
+    date: "no date"
+
   };
   private users: Observable<User[]>;
 

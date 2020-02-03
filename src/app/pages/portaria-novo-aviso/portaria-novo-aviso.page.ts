@@ -26,10 +26,11 @@ export class PortariaNovoAvisoPage implements OnInit {
 
   portaria: Portaria = {
     apt: "",
-    content: "",
+    content: "Encomenda",
     email: "",
     date: "no date"
   }
+  custom: boolean = false;
 
   constructor(private toastCtrl: ToastController,
     private portariaDatabaseService: PortariaDatabaseService,
@@ -37,6 +38,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     public modalController: ModalController) { }
 
   ngOnInit() {
+    console.log(this.custom);
   }
 
   createAviso() {

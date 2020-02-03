@@ -8,9 +8,9 @@
 </ion-header>
 <ion-content class="ion-padding" id="page3">
   <ion-item color="medium">
-    
-      Ramal 332
-    
+
+    Ramal 332
+
   </ion-item>
   <ion-list *ngFor="let user of (users | async)">
     <ion-button *ngIf="user.type != 'morador'" color="primary" detail routerLink="/app/portaria/novo"
@@ -23,11 +23,23 @@
     Avisos recentes
   </ion-item>
   <!-- Add if content = '1' or '2' or '3', to display customized messages, that can easily include images -->
-  <ion-list>
-    <ion-item *ngFor="let portaria of (portarias | async)">
+  <ion-list *ngFor="let portaria of (portarias | async)">
+    <ion-item>
       <ion-icon slot="start"></ion-icon>
       {{ portaria.content }}
     </ion-item>
+    <ion-card *ngIf="portaria.content == 'Encomenda'">
+      <img [src]="' ../assets/img/package.png '" style="width: 40%; height: 40%;" />
+      <ion-card-header>
+        <ion-card-subtitle>Aviso</ion-card-subtitle>
+        <ion-card-title>Uma nova encomenda chegou!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Sua encomenda está te esperando na portaria!
+      </ion-card-content>
+    </ion-card>
+
   </ion-list>
 
 </ion-content>

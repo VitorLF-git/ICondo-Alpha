@@ -63,20 +63,6 @@ export class LoginPage implements OnInit {
 
   }
 
-  ngViewDidEnter() {
-
-    this.userEmail = this.authService.userDetails().email;
-
-
-    if (this.authService.userDetails() != null) {
-      this.router.navigateByUrl('/app');
-    }
-
-
-
-
-  }
-
   async presentLoading() {
     const loading = await this.loadingController.create({
       message: 'Loading Todo..'

@@ -1,23 +1,29 @@
 <ion-header>
-    <ion-toolbar color="success">
-        <ion-buttons slot="start">
-          <ion-menu-button autoHide="false"></ion-menu-button>
-      
-        </ion-buttons>
-        <ion-buttons slot="secondary">
-          <ion-button>
-            <ion-icon slot="icon-only" name="star"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <ion-title>Icondo</ion-title>
-      </ion-toolbar>
+  <ion-toolbar color="success">
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+
+    </ion-buttons>
+    <ion-buttons slot="secondary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="star"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Icondo</ion-title>
+  </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content fullscreen>
+  <ion-card *ngFor="let user of (users | async)" class="ion-user-card" >
+    <ion-card-header >
+      <ion-card-subtitle class="ion-card-content-user">Condomínio flores</ion-card-subtitle>
+      <ion-card-title class="ion-card-content-user">{{ user.name }}</ion-card-title >
+    </ion-card-header>
+    <ion-card-content class="ion-card-content-user">
+      Apartamento: {{ user.apt }}
+    </ion-card-content>
+  </ion-card>
+
   <ion-list>
-    <ion-item button detail routerLink="/app/predio/info" routerDirection="forward">
-      <ion-icon name="person" slot="start"></ion-icon>
-      Meu perfil
-    </ion-item>
     <ion-item button detail routerLink="/app/predio/garagem" routerDirection="forward">
       <ion-icon name="car" slot="start"></ion-icon>
       Garagem
@@ -31,6 +37,8 @@
       Desconectar
     </ion-item>
   </ion-list>
+
+
   <ion-col class="ion-text-center">
     {{userEmail}}
   </ion-col>
@@ -48,5 +56,5 @@
       User Email: {{ user.email }}
     </ion-item>
   </ion-list> -->
-  
+
 </ion-content>

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color='primary'>
     <ion-title>
-      Avisos Page
+      Avisos
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -10,7 +10,8 @@
     Avisos
   </ion-item>
   <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">
-    Informar acontecimentos
+    <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+    Adicionar Aviso
   </ion-button>
   <ion-list>
     <ion-card *ngFor="let aviso of (avisos | async)">
@@ -25,5 +26,5 @@
     </ion-card>
   </ion-list>
 
-  
+
 </ion-content>

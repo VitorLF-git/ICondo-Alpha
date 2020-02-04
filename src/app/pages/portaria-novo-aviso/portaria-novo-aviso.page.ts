@@ -5,6 +5,7 @@ import { User, UserDatabaseService } from 'src/app/services/db-services/user-dat
 import { Observable } from 'rxjs';
 import { PortariaConfirmationPage } from './../../popups/portaria-confirmation/portaria-confirmation.page';
 import { map, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-portaria-novo-aviso',
@@ -28,6 +29,8 @@ export class PortariaNovoAvisoPage implements OnInit {
     apt: "",
     content: "Encomenda",
     email: "",
+    notes: "",
+    custom: false,
     date: "no date"
   }
   custom: boolean = false;
@@ -35,7 +38,8 @@ export class PortariaNovoAvisoPage implements OnInit {
   constructor(private toastCtrl: ToastController,
     private portariaDatabaseService: PortariaDatabaseService,
     private userDatabaseService: UserDatabaseService,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    private router: Router, ) { }
 
   ngOnInit() {
     console.log(this.custom);
@@ -45,29 +49,29 @@ export class PortariaNovoAvisoPage implements OnInit {
 
     this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt);
     console.log("Check Pipe");
-    return this.users.pipe(
+    this.users.pipe(
       map(actions => {
-        return actions.map(a => {
+        actions.map(a => {
           console.log("inside Pipe")
           this.portaria.email = a.email;
           const id = '1';
           this.portariaDatabaseService.addPortaria(this.portaria).then(() => {
+            console.log("finish Pipe")
+
             this.showToast('Aviso Criado com sucesso!');
+
+
+            this.router.navigateByUrl('/app/portaria');
           }, err => {
-            this.showToast('Ocorreu um erro (avisos-novo-aviso.page.ts) :(');
+            this.showToast('Ocorreu um erro (portaria-novo-aviso.page.ts) :(');
           });
-          return { id };
         });
       })).subscribe((val) => {
+        console.log("subscribe")
       }, (error) => {
         console.log('Error: ', error);
       });
 
-    this.portariaDatabaseService.addPortaria(this.portaria).then(() => {
-      this.showToast('Aviso Criado com sucesso!');
-    }, err => {
-      this.showToast('Ocorreu um erro (avisos-novo-aviso.page.ts) :(');
-    });
   }
 
   showToast(msg) {

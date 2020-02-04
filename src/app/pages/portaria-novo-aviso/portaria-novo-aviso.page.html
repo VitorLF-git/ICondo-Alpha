@@ -29,26 +29,29 @@
       <ion-select-option value="Alimentos">Alimentos</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-item *ngIf="custom == true">
+  <ion-item *ngIf="portaria.custom == true">
     <ion-label position="stacked">Aviso</ion-label>
     <ion-input [(ngModel)]="portaria.content" placeholder="Escreva Aqui" value="Encomenda"></ion-input>
+  </ion-item>
+  <ion-item *ngIf="portaria.content == 'Visita'">
+    <ion-label position="stacked">Nome da visita</ion-label>
+    <ion-input [(ngModel)]="portaria.notes" placeholder="Escreva Aqui" value=""></ion-input>
   </ion-item>
   <ion-list>
     <ion-item>
       <ion-label>Outros (Escreva o aviso)</ion-label>
-      <ion-checkbox [(ngModel)]="custom"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="portaria.custom"></ion-checkbox>
 
     </ion-item>
   </ion-list>
 
-  <ion-item *ngIf="custom == 'debug'">
+  <ion-item *ngIf="portaria.custom == 'debug'">
     <ion-label position="stacked">Aviso</ion-label>
     <ion-input [(ngModel)]="portaria.content" placeholder="Escreva Aqui"></ion-input>
   </ion-item>
 
   <ion-toolbar color="success">
-    <ion-button expand="full" fill="clear" color="light" (click)="createAviso()" routerLink="/app/portaria"
-      routerDirection="back">
+    <ion-button expand="full" fill="clear" color="light" (click)="createAviso()">
       <ion-icon name="checkmark" slot="start"></ion-icon>
       Enviar
     </ion-button>

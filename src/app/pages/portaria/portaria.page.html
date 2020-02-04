@@ -22,21 +22,69 @@
     <ion-icon name="person" slot="start"></ion-icon>
     Avisos recentes
   </ion-item>
-  <!-- Add if content = '1' or '2' or '3', to display customized messages, that can easily include images -->
   <ion-list *ngFor="let portaria of (portarias | async)">
-    <ion-item>
+    <!-- <ion-item>
       <ion-icon slot="start"></ion-icon>
       {{ portaria.content }}
-    </ion-item>
+    </ion-item> -->
     <ion-card *ngIf="portaria.content == 'Encomenda'">
-      <img [src]="' ../assets/img/package.png '" style="width: 40%; height: 40%;" />
+      <img [src]="' ../assets/img/package.png '" style="width: 25%; height: 25%;" />
       <ion-card-header>
-        <ion-card-subtitle>Aviso</ion-card-subtitle>
+        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
         <ion-card-title>Uma nova encomenda chegou!</ion-card-title>
       </ion-card-header>
 
       <ion-card-content>
         Sua encomenda está te esperando na portaria!
+        <ion-button color="success"> Confirmar recebimento </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="portaria.content == 'Carta'">
+      <img [src]="' ../assets/img/letter.png '" style="width: 20%; height: 20%;" />
+      <ion-card-header>
+        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
+        <ion-card-title>Uma nova carta chegou!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Colete sua carta na portaria!
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="portaria.content == 'Visita'">
+      <img [src]="' ../assets/img/person.png '" style="width: 25%; height: 25%;" />
+      <ion-card-header>
+        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
+        <ion-card-title>Uma visita está querendo te ver!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Uma visita chegou! Seu nome é: {{portaria.notes}}
+        <ion-button color="success"> OK </ion-button>
+        <ion-button> Não conheço </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="portaria.content == 'Alimentos'">
+      <img [src]="' ../assets/img/food.png '" style="width: 25%; height: 25%;" />
+      <ion-card-header>
+        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
+        <ion-card-title>Sua comida chegou!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Venha até a portaria busca-la!
+        <ion-button color="success"> OK </ion-button>
+        <ion-button> Não é minha </ion-button>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="portaria.custom == true">
+      <img [src]="' ../assets/img/good-alert.png '" style="width: 20%; height: 20%;" />
+      <ion-card-header>
+        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
+        <ion-card-title>Olá!</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Temos um aviso da portaria! {{portaria.content}}
       </ion-card-content>
     </ion-card>
 

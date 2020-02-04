@@ -4,6 +4,8 @@ import { PortariaDatabaseService, Portaria } from 'src/app/services/db-services/
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { NavController } from '@ionic/angular';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -14,7 +16,7 @@ import { NavController } from '@ionic/angular';
 export class PortariaPage implements OnInit {
 
   userEmail: string;
-  
+
   user: User = {
 
     name: '',
@@ -27,28 +29,39 @@ export class PortariaPage implements OnInit {
 
   };
   private users: Observable<User[]>;
-
+  private date: Date;
   private portarias: Observable<Portaria[]>;
- 
+
   constructor(
     private portariaService: PortariaDatabaseService,
     private userDatabaseService: UserDatabaseService,
     private authService: AuthenticateService,
     private navCtrl: NavController
-    ) { }
- 
+  ) { }
+
+  
+
   ngOnInit() {
 
-    
-    this.portarias = this.portariaService.getPortarias();
-    
+    console.log('Start portarias');
 
-    if(this.authService.userDetails()){
+    this.portarias = this.portariaService.getPortarias();
+
+    console.log('Get portarias');
+
+    if (this.authService.userDetails()) {
       this.userEmail = this.authService.userDetails().email;
-    }else{
+    } else {
     }
 
     this.users = this.userDatabaseService.getUsers();
+
+    console.log('Finish');
+
+
   }
+
+ 
+
 
 }

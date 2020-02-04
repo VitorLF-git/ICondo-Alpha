@@ -16,7 +16,7 @@
   <ion-list>
     <ion-card *ngFor="let aviso of (avisos | async)">
       <ion-card-header>
-        <ion-card-subtitle>{{aviso.category}}</ion-card-subtitle>
+        <ion-card-subtitle>{{aviso.category}} - {{aviso.date.seconds * 1000 | date: 'HH' }}h {{aviso.date.seconds * 1000 | date: 'mm' }} min || Dia {{aviso.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
         <ion-card-title>{{aviso.title}}</ion-card-title>
       </ion-card-header>
 

@@ -50,10 +50,18 @@ export class PortariaDatabaseService {
   }
 
   getPortarias(): Observable<Portaria[]> {
+    this.getPortariasByEmail();
+    return this.portarias;
+  }
+
+  getLastPortarias(): Observable<Portaria[]> {
+    this.getLastPortariaByEmail();
     return this.portarias;
   }
 
   getPortaria(id: string): Observable<Portaria> {
+    this.getPortariasByEmail();
+
     return this.portariaCollection.doc<Portaria>(id).valueChanges().pipe(
       take(1),
       map(portaria => {
@@ -64,15 +72,54 @@ export class PortariaDatabaseService {
   }
 
   addPortaria(portaria: Portaria): Promise<DocumentReference> {
+    this.getPortariasByEmail();
+
     portaria.date = firebase.firestore.FieldValue.serverTimestamp();
     return this.portariaCollection.add(portaria);
   }
 
   updatePortaria(portaria: Portaria): Promise<void> {
+    this.getPortariasByEmail();
+
     return this.portariaCollection.doc(portaria.id).update({ name: portaria.apt, notes: portaria.content });
   }
 
   deletePortaria(id: string): Promise<void> {
+    this.getPortariasByEmail();
+
     return this.portariaCollection.doc(id).delete();
+  }
+
+  getLastPortariaByEmail(){
+    console.log("make one")
+    this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.orderBy("date", "desc").limit(1));
+    this.portarias = this.portariaCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          console.log("new change")
+
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  getPortariasByEmail(){
+
+    console.log("make collection")
+    this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.where('email', '==', this.userEmail).orderBy("date", "desc").limit(10));
+    this.portarias = this.portariaCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          console.log("new change")
+
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
   }
 }

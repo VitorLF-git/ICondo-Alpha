@@ -24,8 +24,20 @@ export class PortariaNovoAvisoPage implements OnInit {
     date: "no date"
   };
   private users: Observable<User[]>;
+  private userslist: Observable<User[]>;
+  private portarias: Observable<Portaria[]>;
+
 
   portaria: Portaria = {
+    apt: "",
+    content: "Encomenda",
+    email: "",
+    notes: "",
+    custom: false,
+    date: "no date"
+  }
+
+  portaria2: Portaria = {
     apt: "",
     content: "Encomenda",
     email: "",
@@ -43,7 +55,26 @@ export class PortariaNovoAvisoPage implements OnInit {
 
   ngOnInit() {
     console.log(this.custom);
+    this.userslist = this.userDatabaseService.getAllUsers();
+
+    this.portarias = this.portariaDatabaseService.getLastPortarias();
+
+    this.portarias.pipe(
+      map(actions => {
+        actions.map(a => {
+          console.log("inside Pipe")
+          this.portaria.apt = a.apt;
+          const id = '1';
+        });
+      })).subscribe((val) => {
+        console.log("subscribe")
+      }, (error) => {
+        console.log('Error: ', error);
+      });
+
+
   }
+
 
   createAviso() {
 
@@ -61,7 +92,7 @@ export class PortariaNovoAvisoPage implements OnInit {
             this.showToast('Aviso Criado com sucesso!');
 
 
-            this.router.navigateByUrl('/app/portaria');
+            // this.router.navigateByUrl('/app/portaria');
           }, err => {
             this.showToast('Ocorreu um erro (portaria-novo-aviso.page.ts) :(');
           });
@@ -77,25 +108,29 @@ export class PortariaNovoAvisoPage implements OnInit {
   showToast(msg) {
     this.toastCtrl.create({
       message: msg,
-      duration: 2000
+      duration: 3000,
+      keyboardClose: true,
+      color: "primary",
+      showCloseButton: true,
+      closeButtonText: "Fechar"
     }).then(toast => toast.present());
   }
 
-  async presentModal() {
+  // async presentModal() {
 
-    this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt);
+  //   this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt);
 
 
-    const modal = await this.modalController.create({
-      component: PortariaConfirmationPage,
-      componentProps: {
-        'portaria': this.portaria,
-        'user': this.users,
-        'apt': this.portaria.apt
-      }
-    });
-    return await modal.present();
-  }
+  //   const modal = await this.modalController.create({
+  //     component: PortariaConfirmationPage,
+  //     componentProps: {
+  //       'portaria': this.portaria,
+  //       'user': this.users,
+  //       'apt': this.portaria.apt
+  //     }
+  //   });
+  //   return await modal.present();
+  // }
 
 
 }

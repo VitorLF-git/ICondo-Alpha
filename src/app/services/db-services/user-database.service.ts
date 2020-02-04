@@ -38,6 +38,11 @@ export class UserDatabaseService {
     return this.users;
   }
 
+  getAllUsers(): Observable<User[]> {
+    this.getUsersByNothing();
+    return this.users;
+  }
+
   getUsersByApt(apt: string) {
     
     if (this.authService.userDetails()) {
@@ -72,6 +77,26 @@ export class UserDatabaseService {
     }
 
     this.userCollection = this.afs.collection<User>('user', ref => ref.where('email', '==', this.userEmail));
+    this.users = this.userCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  getUsersByNothing() {
+
+    if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+      this.authService.userDetails().getIdToken;
+    } else {
+    }
+
+    this.userCollection = this.afs.collection<User>('user');
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

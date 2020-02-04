@@ -47,6 +47,8 @@
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>
-
-  <p class="go-to-login">Já tem uma conta? <a (click)="goLoginPage()">Faça o login.</a></p>
+  <ion-list>
+    <ion-item position="floating" color="primary">Já tem uma conta?</ion-item>
+    <ion-button (click)="goLoginPage()">Faça o login.</ion-button>
+  </ion-list>
 </ion-content>

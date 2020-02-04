@@ -33,14 +33,16 @@
       </ng-container>
     </div>
     <div class="spacer" style="width:35px;height:35px;"></div>
-    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Log In</ion-button>
+    <ion-button class="submit-btn" type="submit" [disabled]="!validations_form.valid">Login</ion-button>
 
     <label class="error-message">{{errorMessage}}</label>
   </form>
-  <p>
-    Não tem uma conta ainda?
-  </p>
-  <p class="go-to-register">
-    <a (click)="goToRegisterPage()">Crie uma conta!</a>
-  </p>
+
+  <ion-list>
+    <ion-item position="floating" color="primary">Não tem uma conta ainda?</ion-item>
+    <ion-button (click)="goToRegisterPage()">Crie uma conta!</ion-button>
+  </ion-list>
+
+  
+
 </ion-content>

@@ -15,6 +15,8 @@ import { map } from 'rxjs/operators';
 })
 export class PortariaPage implements OnInit {
 
+  private portaria: Portaria;
+
   userEmail: string;
 
   user: User = {
@@ -39,7 +41,7 @@ export class PortariaPage implements OnInit {
     private navCtrl: NavController
   ) { }
 
-  
+
 
   ngOnInit() {
 
@@ -61,7 +63,22 @@ export class PortariaPage implements OnInit {
 
   }
 
- 
+  updateAvisoPorteiro(id: string, message: string) {
+
+    console.log(id);
+
+    this.portariaService.confirmPortariaPorteiro(id, message);
+
+  }
+
+  updateAvisoMorador(id: string, message: string) {
+
+    console.log(id);
+
+    this.portariaService.confirmPortariaMorador(id, message);
+  }
+
+
 
 
 }

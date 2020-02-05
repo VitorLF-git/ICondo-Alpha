@@ -14,6 +14,8 @@ export interface Portaria {
   email: string,
   notes: string,
   custom: boolean,
+  confirmed: string,
+  confirmed2: string,
   date: any
 }
 
@@ -79,9 +81,21 @@ export class PortariaDatabaseService {
   }
 
   updatePortaria(portaria: Portaria): Promise<void> {
-    this.getPortariasByEmail();
+    this.getPortariasByNothing();
 
-    return this.portariaCollection.doc(portaria.id).update({ name: portaria.apt, notes: portaria.content });
+    return this.portariaCollection.doc(portaria.id).update({ confirmed: portaria.confirmed });
+  }
+
+  confirmPortariaMorador(id: string, message: string): Promise<void> {
+    this.getPortariasByNothing();
+
+    return this.portariaCollection.doc(id).update({ confirmed: message });
+  }
+
+  confirmPortariaPorteiro(id: string, message: string): Promise<void> {
+    this.getPortariasByNothing();
+
+    return this.portariaCollection.doc(id).update({ confirmed2: message });
   }
 
   deletePortaria(id: string): Promise<void> {
@@ -90,7 +104,7 @@ export class PortariaDatabaseService {
     return this.portariaCollection.doc(id).delete();
   }
 
-  getLastPortariaByEmail(){
+  getLastPortariaByEmail() {
     console.log("make one")
     this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.orderBy("date", "desc").limit(1));
     this.portarias = this.portariaCollection.snapshotChanges().pipe(
@@ -106,10 +120,27 @@ export class PortariaDatabaseService {
     );
   }
 
-  getPortariasByEmail(){
+  getPortariasByEmail() {
 
     console.log("make collection")
     this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.where('email', '==', this.userEmail).orderBy("date", "desc").limit(10));
+    this.portarias = this.portariaCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          console.log("new change")
+
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  getPortariasByNothing() {
+
+    console.log("make collection")
+    this.portariaCollection = this.afs.collection<Portaria>('portaria');
     this.portarias = this.portariaCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

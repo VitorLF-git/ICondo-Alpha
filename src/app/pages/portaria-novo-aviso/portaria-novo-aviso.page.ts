@@ -34,6 +34,8 @@ export class PortariaNovoAvisoPage implements OnInit {
     email: "",
     notes: "",
     custom: false,
+    confirmed: 'false',
+    confirmed2: 'false',
     date: "no date"
   }
 
@@ -43,6 +45,8 @@ export class PortariaNovoAvisoPage implements OnInit {
     email: "",
     notes: "",
     custom: false,
+    confirmed: 'false',
+    confirmed2: 'false',
     date: "no date"
   }
   custom: boolean = false;

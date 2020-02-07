@@ -27,6 +27,10 @@
   </ion-card>
 
   <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Token</ion-label>
+      <ion-input [(ngModel)]="localToken"></ion-input>
+    </ion-item>
     <ion-item button detail routerLink="/app/predio/garagem" routerDirection="forward">
       <ion-icon name="car" slot="start"></ion-icon>
       Garagem

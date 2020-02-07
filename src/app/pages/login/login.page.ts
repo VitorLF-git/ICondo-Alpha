@@ -7,6 +7,9 @@ import { IfStmt } from '@angular/compiler';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { Observable } from 'rxjs';
 
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Platform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-login',
@@ -33,6 +36,9 @@ export class LoginPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
 
+  pushes: any = [];
+  localToken: string = 'notoken';
+
   constructor(
 
     private navCtrl: NavController,
@@ -41,11 +47,12 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private loadingController: LoadingController,
     private userDatabaseService: UserDatabaseService,
+    
 
-  ) { }
+  ) {}
+   
 
-
-
+  
   ngOnInit() {
 
 
@@ -59,6 +66,7 @@ export class LoginPage implements OnInit {
         Validators.required
       ])),
     });
+
 
 
   }

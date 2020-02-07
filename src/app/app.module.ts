@@ -19,6 +19,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
  
+import { FCM } from '@ionic-native/fcm/ngx';
 
 firebase.initializeApp(environment.firebase);
 
@@ -38,7 +39,8 @@ firebase.initializeApp(environment.firebase);
     SplashScreen,
     AuthenticateService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: FirestoreSettingsToken, useValue: {} }
+    { provide: FirestoreSettingsToken, useValue: {} },
+    FCM
   ],
   bootstrap: [AppComponent]
 })

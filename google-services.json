@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "974659494278",
+    "firebase_url": "https://spring-base-250217.firebaseio.com",
+    "project_id": "spring-base-250217",
+    "storage_bucket": "spring-base-250217.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974659494278:android:020ca1c14ce2fbd873cc07",
+        "android_client_info": {
+          "package_name": "com.vitor.icondo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974659494278-lttmec89v71k4cqf5o0nm6hrfcrgv9l9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANvY17FfXowEmvNpDhIuNIIa4mFjubfGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974659494278-lttmec89v71k4cqf5o0nm6hrfcrgv9l9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

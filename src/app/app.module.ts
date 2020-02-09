@@ -21,6 +21,9 @@ import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/fi
  
 import { FCM } from '@ionic-native/fcm/ngx';
 
+
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+
 firebase.initializeApp(environment.firebase);
 
 @NgModule({
@@ -30,6 +33,7 @@ firebase.initializeApp(environment.firebase);
     /** Firebase Auth Modules */
     AngularFireAuthModule, ReactiveFormsModule,
     /** Firebase Auth Modules end */
+    HttpClientModule,
     /** Firebase Db Modules */
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule],
@@ -38,6 +42,7 @@ firebase.initializeApp(environment.firebase);
     StatusBar,
     SplashScreen,
     AuthenticateService,
+    HttpClient,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: FirestoreSettingsToken, useValue: {} },
     FCM

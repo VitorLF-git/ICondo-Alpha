@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FCM } from '@ionic-native/fcm/ngx';
 
+import {HttpClient} from '@angular/common/http';
+
+
 @Component({
   selector: 'app-predio',
   templateUrl: './predio.page.html',
@@ -14,6 +17,8 @@ import { FCM } from '@ionic-native/fcm/ngx';
 })
 export class PredioPage implements OnInit {
   userEmail: string;
+
+  firebaseReply: string = "You'll see Firebase function response here";
 
   user: User = {
 
@@ -38,7 +43,8 @@ export class PredioPage implements OnInit {
     private userDatabaseService: UserDatabaseService,
     private router: Router,
     private fcm: FCM, 
-    public plt: Platform
+    public plt: Platform,
+    private http: HttpClient,
   ) {
     this.plt.ready()
     .then(() => {
@@ -77,6 +83,16 @@ export class PredioPage implements OnInit {
   }
   unsubscribeFromTopic() {
     this.fcm.unsubscribeFromTopic('enappd');
+  }
+
+  callCloudFunction() {
+    this.http
+      .get(
+        'http://localhost:5000/spring-base-250217/us-central1/helloWorld')
+      .subscribe((data: any) => {
+        console.log(data);
+        this.firebaseReply = data.text;
+      });
   }
 
 

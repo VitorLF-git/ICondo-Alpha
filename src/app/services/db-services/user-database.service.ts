@@ -14,6 +14,7 @@ export interface User {
   garage: string,
   type: string,
   notes: string,
+  token: string,
   date: any
 }
 
@@ -128,6 +129,12 @@ export class UserDatabaseService {
     this.getUsersByEmail();
 
     return this.userCollection.doc(user.id).update({ name: user.name, notes: user.notes });
+  }
+
+  updateUserToken(userId, token): Promise<void> {
+    this.getUsersByEmail();
+
+    return this.userCollection.doc(userId).update({ token: token });
   }
 
   deleteUser(id: string): Promise<void> {

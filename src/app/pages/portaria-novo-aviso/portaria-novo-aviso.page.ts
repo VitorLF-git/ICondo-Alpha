@@ -21,6 +21,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     garage: '',
     type: 'morador',
     notes: '',
+    token: 'notoken',
     date: "no date"
   };
   private users: Observable<User[]>;

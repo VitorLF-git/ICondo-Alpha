@@ -21,6 +21,7 @@ export class RegisterPage implements OnInit {
     garage: '',
     type: 'sindico',
     notes: '',
+    token: 'notoken',
     date: "no date"
   };
 

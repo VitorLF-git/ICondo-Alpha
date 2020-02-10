@@ -27,6 +27,7 @@ export class PortariaPage implements OnInit {
     garage: '',
     type: 'morador',
     notes: '',
+    token: 'notoken',
     date: "no date"
 
   };

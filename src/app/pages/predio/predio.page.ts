@@ -90,7 +90,7 @@ export class PredioPage implements OnInit {
   callCloudFunction() {
     this.http
       .get(
-        'http://localhost:5000/spring-base-250217/us-central1/helloWorld')
+        'https://us-central1-spring-base-250217.cloudfunctions.net/aranha')
       .subscribe((data: any) => {
         console.log(data);
         this.firebaseReply = data.text;

@@ -37,6 +37,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     custom: false,
     confirmed: 'false',
     confirmed2: 'false',
+    token: 'notoken',
     date: "no date"
   }
 
@@ -48,6 +49,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     custom: false,
     confirmed: 'false',
     confirmed2: 'false',
+    token: 'notoken',
     date: "no date"
   }
   custom: boolean = false;
@@ -90,6 +92,7 @@ export class PortariaNovoAvisoPage implements OnInit {
         actions.map(a => {
           console.log("inside Pipe")
           this.portaria.email = a.email;
+          this.portaria.token = a.token;
           const id = '1';
           this.portariaDatabaseService.addPortaria(this.portaria).then(() => {
             console.log("finish Pipe")

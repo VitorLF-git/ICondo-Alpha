@@ -16,6 +16,7 @@ export interface Portaria {
   custom: boolean,
   confirmed: string,
   confirmed2: string,
+  token: string,
   date: any
 }
 

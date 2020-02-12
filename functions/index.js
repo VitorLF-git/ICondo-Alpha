@@ -21,11 +21,19 @@ exports.aranha = functions.https.onRequest((request, response) => {
 });
 
 
-exports.sendnot = functions.firestore
+exports.sendNotification = functions.firestore
     .document('portaria/{userId}')
-    .onWrite(async (change, context) => {
-        const followerUid = context.params.followerUid;
-        const followedUid = context.params.followedUid;
+    .onCreate(async (snap, context) => {
+
+        // Get an object representing the document
+        // e.g. {'name': 'Marie', 'age': 66}
+        const newValue = snap.data();
+
+        // access a particular field as you would any JS property
+        const followedUid = newValue.email;
+
+        const followerUid = context.params.userId;
+        
         // If un-follow we exit the function.
         console.log('We have a new follower UID:', followerUid, 'for user:', followedUid);
 
@@ -36,7 +44,7 @@ exports.sendnot = functions.firestore
         // Notification details.
         const payload = {
             notification: {
-                title: 'You have a new follower!',
+                title: 'You have a new follower ver2!',
                 body: `is now following you.`,
             }
         };

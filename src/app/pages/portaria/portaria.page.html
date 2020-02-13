@@ -22,8 +22,9 @@
     <ion-icon name="person" slot="start"></ion-icon>
     Avisos recentes
   </ion-item>
-  <ion-list *ngFor="let portaria of (portarias | async)">
-    <!-- <ion-item>
+  <ion-list *ngFor="let user of (users | async)">
+    <ion-list *ngFor="let portaria of (portarias | async)">
+      <!-- <ion-item>
       <ion-icon slot="start"></ion-icon>
       {{ portaria.content }}
     </ion-item> -->
@@ -31,164 +32,173 @@
 
 
 
-    <ion-card *ngIf="portaria.content == 'Encomenda'">
-      <img [src]="' ../assets/img/package.png '" style="width: 25%; height: 25%;" />
-      <ion-card-header>
-        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
-          {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
-        </ion-card-subtitle>
-        <ion-card-title>Uma nova encomenda chegou!</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Sua encomenda está te esperando na portaria!
-        <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'false'">
-          Confirmar recebimento </ion-button>
-        <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
-          *ngIf="portaria.confirmed == 'false'">
-          Não é minha. </ion-button>
-        <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Confirmar recebimento Portaria </ion-button>
+      <ion-card *ngIf="portaria.content == 'Encomenda'">
+        <img [src]="' ../assets/img/package.png '" style="width: 25%; height: 25%;" />
+        <ion-card-header>
+          <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
+            {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia
+            {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
+          </ion-card-subtitle>
+          <ion-card-title>Uma nova encomenda chegou!</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Sua encomenda está te esperando na portaria!
+          <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Confirmar recebimento </ion-button>
+          <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Não é minha. </ion-button>
+          <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false' && user.type != 'morador'">
+            Confirmar recebimento - Portaria </ion-button>
 
-        <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Aguardando Confirmação da portaria </ion-item>
-        <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
-          Aguardando Confirmação do morador... </ion-item>
-        <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
-          Encomenda não pertence ao morador! </ion-item>
-        <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
-          Entrega Confirmada! </ion-item>
-      </ion-card-content>
-    </ion-card>
-
-
-
-
-    <ion-card *ngIf="portaria.content == 'Carta'">
-      <img [src]="' ../assets/img/letter.png '" style="width: 20%; height: 20%;" />
-      <ion-card-header>
-        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
-          {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
-        </ion-card-subtitle>
-        <ion-card-title>Uma nova carta chegou!</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Colete sua carta na portaria!
-        <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'false'">
-          Confirmar recebimento </ion-button>
-        <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
-          *ngIf="portaria.confirmed == 'false'">
-          Não é minha. </ion-button>
-        <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Confirmar recebimento Portaria </ion-button>
-
-        <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Aguardando Confirmação da portaria </ion-item>
-        <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
-          Aguardando Confirmação do morador... </ion-item>
-        <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
-          Encomenda não pertence ao morador! </ion-item>
-        <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
-          Entrega Confirmada! </ion-item>
-
-      </ion-card-content>
-    </ion-card>
+          <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
+            Aguardando Confirmação da portaria </ion-item>
+          <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
+            Aguardando Confirmação do morador... </ion-item>
+          <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
+            Encomenda não pertence ao morador! </ion-item>
+          <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
+            Entrega Confirmada! </ion-item>
+        </ion-card-content>
+      </ion-card>
 
 
 
 
-    <ion-card *ngIf="portaria.content == 'Visita'">
-      <img [src]="' ../assets/img/person.png '" style="width: 25%; height: 25%;" />
-      <ion-card-header>
-        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
-          {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
-        </ion-card-subtitle>
-        <ion-card-title>Uma visita está querendo te ver!</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Uma visita chegou! Seu nome é: <h2>{{portaria.notes}}</h2>
-        <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'false'">
-          Liberar a entrada </ion-button>
-        <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
-          *ngIf="portaria.confirmed == 'false'">
-          Não conheço. </ion-button>
-        <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Confirmar entrada </ion-button>
+      <ion-card *ngIf="portaria.content == 'Carta'">
+        <img [src]="' ../assets/img/letter.png '" style="width: 20%; height: 20%;" />
+        <ion-card-header>
+          <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
+            {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia
+            {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
+          </ion-card-subtitle>
+          <ion-card-title>Uma nova carta chegou!</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Colete sua carta na portaria!
+          <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Confirmar recebimento </ion-button>
+          <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Não é minha. </ion-button>
+          <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false' && user.type != 'morador'">
+            Confirmar recebimento - Portaria </ion-button>
 
-        <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          Aguardando Confirmação da portaria </ion-item>
-        <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
-          Aguardando Confirmação do morador... </ion-item>
-        <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
-          Entrada não foi liberada! </ion-item>
-        <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
-          Entrada Liberada! </ion-item>
+          <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
+            Aguardando Confirmação da portaria </ion-item>
+          <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
+            Aguardando Confirmação do morador... </ion-item>
+          <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
+            Encomenda não pertence ao morador! </ion-item>
+          <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
+            Entrega Confirmada! </ion-item>
 
-      </ion-card-content>
-    </ion-card>
-
-
-
-    <ion-card *ngIf="portaria.content == 'Alimentos'">
-      <img [src]="' ../assets/img/food.png '" style="width: 25%; height: 25%;" />
-      <ion-card-header>
-        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
-          {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
-        </ion-card-subtitle>
-        <ion-card-title>Sua comida chegou!</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Venha até a portaria busca-la!
-        <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'false'">
-          Estou descendo! </ion-button>
-        <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
-          *ngIf="portaria.confirmed == 'false'">
-          Não é minha. </ion-button>
-        <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
-          *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'true'">
-          Confirmar entrega </ion-button>
-
-        <ion-item color="medium" *ngIf="portaria.confirmed == 'false' && portaria.confirmed2 == 'false'">
-          Esperando resposta... </ion-item>
-        <ion-item color="danger" *ngIf="portaria.confirmed == 'negative' && portaria.confirmed2 == 'false'">
-          Morador não pediu comida! </ion-item>
-        <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
-          O morador está a caminho... </ion-item>
-        <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
-          Entrega Confirmada! </ion-item>
-      </ion-card-content>
-    </ion-card>
+        </ion-card-content>
+      </ion-card>
 
 
 
 
-    <ion-card *ngIf="portaria.custom == true">
-      <img [src]="' ../assets/img/good-alert.png '" style="width: 20%; height: 20%;" />
-      <ion-card-header>
-        <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
-          {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
-        </ion-card-subtitle>
-        <ion-card-title>Olá!</ion-card-title>
-      </ion-card-header>
+      <ion-card *ngIf="portaria.content == 'Visita'">
+        <img [src]="' ../assets/img/person.png '" style="width: 25%; height: 25%;" />
+        <ion-card-header>
+          <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
+            {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia
+            {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
+          </ion-card-subtitle>
+          <ion-card-title>Uma visita está querendo te ver!</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Uma visita chegou! Seu nome é: <h2>{{portaria.notes}}</h2>
+          <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Liberar a entrada </ion-button>
+          <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Não conheço. </ion-button>
+          <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false' && user.type != 'morador'">
+            Confirmar entrada </ion-button>
 
-      <ion-card-content>
-        Temos um aviso da portaria!
-        <ion-item color='primary'><h1></h1>{{portaria.content}}</ion-item>
-        <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
-          *ngIf="portaria.confirmed == 'false'">
-          Confirmar recebimento </ion-button>
-        
-        <ion-item color="success" *ngIf="portaria.confirmed == 'true'">
-          Aviso Lido! </ion-item>
-      </ion-card-content>
-    </ion-card>
+          <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
+            Aguardando Confirmação da portaria </ion-item>
+          <ion-item color="medium" *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'false'">
+            Aguardando Confirmação do morador... </ion-item>
+          <ion-item color="danger" *ngIf="portaria.confirmed == 'negative'">
+            Entrada não foi liberada! </ion-item>
+          <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
+            Entrada Liberada! </ion-item>
 
+        </ion-card-content>
+      </ion-card>
+
+
+
+      <ion-card *ngIf="portaria.content == 'Alimentos'">
+        <img [src]="' ../assets/img/food.png '" style="width: 25%; height: 25%;" />
+        <ion-card-header>
+          <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
+            {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia
+            {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
+          </ion-card-subtitle>
+          <ion-card-title>Sua comida chegou!</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          Venha até a portaria busca-la!
+          <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Estou descendo! </ion-button>
+          <ion-button color="danger" (click)="updateAvisoMorador(portaria.id, 'negative')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Não é minha. </ion-button>
+          <ion-button color="success" (click)="updateAvisoPorteiro(portaria.id, 'true')"
+            *ngIf="portaria.confirmed2 == 'false' && portaria.confirmed == 'true' && user.type != 'morador'">
+            Confirmar entrega </ion-button>
+
+          <ion-item color="medium" *ngIf="portaria.confirmed == 'false' && portaria.confirmed2 == 'false'">
+            Esperando resposta... </ion-item>
+          <ion-item color="danger" *ngIf="portaria.confirmed == 'negative' && portaria.confirmed2 == 'false'">
+            Morador não pediu comida! </ion-item>
+          <ion-item color="medium" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'false'">
+            O morador está a caminho... </ion-item>
+          <ion-item color="success" *ngIf="portaria.confirmed == 'true' && portaria.confirmed2 == 'true'">
+            Entrega Confirmada! </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+
+
+
+      <ion-card *ngIf="portaria.custom == true">
+        <img [src]="' ../assets/img/good-alert.png '" style="width: 20%; height: 20%;" />
+        <ion-card-header>
+          <ion-card-subtitle>Aviso - {{portaria.date.seconds * 1000 | date: 'HH' }}h
+            {{portaria.date.seconds * 1000 | date: 'mm' }} min || Dia
+            {{portaria.date.seconds * 1000 | date: 'dd-MM-yy' }}
+          </ion-card-subtitle>
+          <ion-card-title>Olá!</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          Temos um aviso da portaria!
+          <ion-item color='primary'>
+            <h1></h1>{{portaria.content}}
+          </ion-item>
+          <ion-button color="success" (click)="updateAvisoMorador(portaria.id, 'true')"
+            *ngIf="portaria.confirmed == 'false' && user.type == 'morador'">
+            Confirmar recebimento </ion-button>
+
+          <ion-item color="success" *ngIf="portaria.confirmed == 'true'">
+            Aviso Lido! </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-list>
   </ion-list>
+
 
 </ion-content>

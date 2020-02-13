@@ -26,6 +26,7 @@ export class LoginPage implements OnInit {
     type: 'morador',
     notes: '',
     token: 'notoken',
+    condominio: '',
     date: "no date"
   };
 

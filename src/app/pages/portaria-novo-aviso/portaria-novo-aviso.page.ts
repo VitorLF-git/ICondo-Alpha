@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Portaria, PortariaDatabaseService } from 'src/app/services/db-services/portaria-database.service';
-import { ToastController, ModalController } from '@ionic/angular';
+import { ToastController, ModalController, LoadingController } from '@ionic/angular';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { Observable } from 'rxjs';
 import { PortariaConfirmationPage } from './../../popups/portaria-confirmation/portaria-confirmation.page';
@@ -22,6 +22,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     type: 'morador',
     notes: '',
     token: 'notoken',
+    condominio: '',
     date: "no date"
   };
   private users: Observable<User[]>;
@@ -58,7 +59,8 @@ export class PortariaNovoAvisoPage implements OnInit {
     private portariaDatabaseService: PortariaDatabaseService,
     private userDatabaseService: UserDatabaseService,
     public modalController: ModalController,
-    private router: Router, ) { }
+    private router: Router,
+    private loadingController: LoadingController, ) { }
 
   ngOnInit() {
     console.log(this.custom);
@@ -82,8 +84,27 @@ export class PortariaNovoAvisoPage implements OnInit {
 
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loading Todo..'
+    });
+    await loading.present();
 
-  createAviso() {
+
+    loading.dismiss();
+
+
+
+  }
+
+
+  async createAviso() {
+
+    const loading = await this.loadingController.create({
+      message: 'Criando aviso..'
+    });
+    await loading.present();
+
 
     this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt);
     console.log("Check Pipe");
@@ -100,6 +121,7 @@ export class PortariaNovoAvisoPage implements OnInit {
             this.showToast('Aviso Criado com sucesso!');
 
 
+            loading.dismiss();
             // this.router.navigateByUrl('/app/portaria');
           }, err => {
             this.showToast('Ocorreu um erro (portaria-novo-aviso.page.ts) :(');

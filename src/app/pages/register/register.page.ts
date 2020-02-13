@@ -5,7 +5,10 @@ import { NavController } from '@ionic/angular';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
- 
+import { Condominio, CondominioDatabaseService } from './../../services/db-services/condominio-database.service';
+import { map } from 'rxjs/internal/operators/map';
+
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -22,37 +25,45 @@ export class RegisterPage implements OnInit {
     type: 'sindico',
     notes: '',
     token: 'notoken',
+    condominio: '',
     date: "no date"
   };
 
-  private users: Observable<User[]>;
+  condominio: Condominio = {
+    name: '',
+    code: '',
+  }
 
- 
- 
+  private users: Observable<User[]>;
+  private code: string = '';
+  private condominioIsTrue: boolean = false;
+  private condominios: Observable<Condominio[]>;
+
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
- 
+
   validation_messages = {
-   'email': [
-     { type: 'required', message: 'Por favor escreva um email.' },
-     { type: 'pattern', message: 'Por favor coloque um email válido.' }
-   ],
-   'password': [
-     { type: 'required', message: 'Por favor escreva a senha.' },
-     { type: 'minlength', message: 'A senha deve ter pelo menos 5 caracteres.' }
-   ]
- };
- 
+    'email': [
+      { type: 'required', message: 'Por favor escreva um email.' },
+      { type: 'pattern', message: 'Por favor coloque um email válido.' }
+    ],
+    'password': [
+      { type: 'required', message: 'Por favor escreva a senha.' },
+      { type: 'minlength', message: 'A senha deve ter pelo menos 5 caracteres.' }
+    ]
+  };
+
   constructor(
     private navCtrl: NavController,
     private authService: AuthenticateService,
     private formBuilder: FormBuilder,
     private userdatabaseservice: UserDatabaseService,
-    private toastCtrl: ToastController
-  ) {}
- 
-  ngOnInit(){
+    private toastCtrl: ToastController,
+    private condominiodatabaseservice: CondominioDatabaseService,
+  ) { }
+
+  ngOnInit() {
     this.validations_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
@@ -62,11 +73,41 @@ export class RegisterPage implements OnInit {
         Validators.minLength(6),
         Validators.required
       ])),
-      
+
     });
   }
 
-  saveOnDB(value){
+  checkCode() {
+
+    console.log("checkCode");
+    console.log(this.code);
+
+
+    this.condominios = this.condominiodatabaseservice.getCondominiosByCode(this.code);
+
+    this.condominios.pipe(
+      map(actions => {
+        actions.map(a => {
+          console.log("inside Pipe")
+          this.condominio.code = a.code;
+          this.condominio.name = a.name;
+          this.user.condominio = a.name;
+          if(this.user.condominio != ''){
+            this.condominioIsTrue = true;
+          }
+          const id = '1';
+        });
+      })).subscribe((val) => {
+        console.log("subscribe")
+      }, (error) => {
+        console.log('Error: ', error);
+      });
+
+
+
+  }
+
+  saveOnDB(value) {
     /** It would be better to do the same thing you're doing for the email to name and apt! */
     this.user.email = this.validations_form.controls['email'].value
     this.userdatabaseservice.addUser(this.user).then(() => {
@@ -77,29 +118,29 @@ export class RegisterPage implements OnInit {
     this.tryRegister(value);
 
   }
- 
-  tryRegister(value){
+
+  tryRegister(value) {
     this.authService.registerUser(value)
-     .then(res => {
-       console.log(res);
-       this.errorMessage = "";
-       this.successMessage = "Your account has been created. Please log in.";
-     }, err => {
-       console.log(err);
-       this.errorMessage = err.message;
-       this.successMessage = "";
-     })
+      .then(res => {
+        console.log(res);
+        this.errorMessage = "";
+        this.successMessage = "Your account has been created. Please log in.";
+      }, err => {
+        console.log(err);
+        this.errorMessage = err.message;
+        this.successMessage = "";
+      })
   }
- 
-  goLoginPage(){
+
+  goLoginPage() {
     this.navCtrl.navigateBack('');
   }
- 
+
   showToast(msg) {
     this.toastCtrl.create({
       message: msg,
       duration: 2000
     }).then(toast => toast.present());
   }
- 
+
 }

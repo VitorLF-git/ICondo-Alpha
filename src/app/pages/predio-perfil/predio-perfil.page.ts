@@ -23,6 +23,7 @@ export class PredioPerfilPage implements OnInit {
     type: 'morador',
     notes: '',
     token: 'notoken',
+    condominio: '',
     date: "no date"
 
   };

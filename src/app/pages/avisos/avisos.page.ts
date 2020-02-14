@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AvisoDatabaseService, Aviso } from 'src/app/services/db-services/aviso-database.service';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { NavController } from '@ionic/angular';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 @Component({
   selector: 'app-avisos',
@@ -12,14 +13,17 @@ import { NavController } from '@ionic/angular';
 export class AvisosPage implements OnInit {
 
   private avisos: Observable<Aviso[]>;
+  private currentCondominio: string;
 
   constructor(private avisoService: AvisoDatabaseService,
     private authService: AuthenticateService,
-    private navCtrl: NavController) { }
+    private navCtrl: NavController,
+    private localDatabaseService: LocalDatabaseService) { }
 
   ngOnInit() {
-    
-    this.avisos = this.avisoService.getAvisos();
+    this.currentCondominio = this.localDatabaseService.getCurrentCondominio();
+
+    this.avisos = this.avisoService.getAvisos(this.currentCondominio);
   }
 
 }

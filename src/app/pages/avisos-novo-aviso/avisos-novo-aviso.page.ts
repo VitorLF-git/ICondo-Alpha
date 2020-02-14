@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AvisoDatabaseService, Aviso } from 'src/app/services/db-services/aviso-database.service';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 
 @Component({
@@ -15,17 +16,24 @@ export class AvisosNovoAvisoPage implements OnInit {
     title: "",
     content: "",
     category: "Condominio",
+    condominio: '',
     date: "no date"
   }
 
-  constructor(private avisoDatabaseService: AvisoDatabaseService, private router: Router, private toastCtrl: ToastController) { }
+  constructor(
+    private avisoDatabaseService: AvisoDatabaseService, 
+    private router: Router, 
+    private toastCtrl: ToastController,
+    private localDatabaseService: LocalDatabaseService,
+    ) { }
 
   ngOnInit() {
+    this.aviso.condominio = this.localDatabaseService.getCurrentCondominio();
   }
 
   createAviso() {
 
-    this.avisoDatabaseService.addAviso(this.aviso).then(() => {
+    this.avisoDatabaseService.addAviso(this.aviso, this.aviso.condominio).then(() => {
       this.showToast('Aviso Criado com sucesso!');
     }, err => {
       this.showToast('Ocorreu um erro (avisos-novo-aviso.page.ts) :(');

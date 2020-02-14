@@ -38,18 +38,7 @@ export class PortariaDatabaseService {
     } else {
     }
     console.log("make collection")
-    this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.where('email', '==', this.userEmail).orderBy("date", "desc").limit(10));
-    this.portarias = this.portariaCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          console.log("new change")
-
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      })
-    );
+    
   }
 
   getPortarias(): Observable<Portaria[]> {

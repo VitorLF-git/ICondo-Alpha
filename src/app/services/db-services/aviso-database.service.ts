@@ -13,6 +13,7 @@ export interface Aviso {
   date: any,
   title: string,
   content: string,
+  condominio: string,
   category: string,
 }
 
@@ -29,30 +30,19 @@ export class AvisoDatabaseService {
 
 
   constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
-    if (this.authService.userDetails()) {
-      this.userEmail = this.authService.userDetails().email;
-    } else {
-    }
-
-
-    this.avisoCollection = this.afs.collection<Aviso>('aviso', ref => ref.orderBy("date", "desc").limit(10));
-    this.avisos = this.avisoCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      })
-    );
+    
+    
   }
 
-  getAvisos(): Observable<Aviso[]> {
+  getAvisos(condominio: string): Observable<Aviso[]> {
+    this.getAvisosByCondominio(condominio);
 
     return this.avisos;
   }
 
-  getAviso(id: string): Observable<Aviso> {
+  getAviso(id: string, condominio): Observable<Aviso> {
+    this.getAvisosByCondominio(condominio);
+
     return this.avisoCollection.doc<Aviso>(id).valueChanges().pipe(
       take(1),
       map(aviso => {
@@ -62,17 +52,44 @@ export class AvisoDatabaseService {
     );
   }
 
-  addAviso(aviso: Aviso): Promise<DocumentReference> {
+  addAviso(aviso: Aviso, condominio): Promise<DocumentReference> {
+    this.getAvisosByCondominio(condominio);
     aviso.date = firebase.firestore.FieldValue.serverTimestamp();
     return this.avisoCollection.add(aviso);
   }
 
-  updateAviso(aviso: Aviso): Promise<void> {
+  updateAviso(aviso: Aviso, condominio): Promise<void> {
+    this.getAvisosByCondominio(condominio);
+
     return this.avisoCollection.doc(aviso.id).update({ name: aviso.title, notes: aviso.content });
   }
 
-  deleteAviso(id: string): Promise<void> {
+  deleteAviso(id: string, condominio): Promise<void> {
+    this.getAvisosByCondominio(condominio);
+
     return this.avisoCollection.doc(id).delete();
+  }
+
+  getAvisosByCondominio(condominio: string){
+
+    if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+    } else {
+    }
+
+
+    this.avisoCollection = this.afs.collection<Aviso>('aviso', ref => ref.where('condominio', '==', condominio).orderBy("date", "desc").limit(10));
+    this.avisos = this.avisoCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+
+
   }
 
 

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { PortariaConfirmationPage } from './../../popups/portaria-confirmation/portaria-confirmation.page';
 import { map, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 @Component({
   selector: 'app-portaria-novo-aviso',
@@ -60,19 +61,24 @@ export class PortariaNovoAvisoPage implements OnInit {
     private userDatabaseService: UserDatabaseService,
     public modalController: ModalController,
     private router: Router,
-    private loadingController: LoadingController, ) { }
+    private loadingController: LoadingController,
+    private localDatabaseService: LocalDatabaseService, ) { }
 
   ngOnInit() {
     console.log(this.custom);
-    this.userslist = this.userDatabaseService.getAllUsers();
+    this.user.condominio = this.localDatabaseService.getCurrentCondominio();
+    this.userslist = this.userDatabaseService.getAllUsersOfCondominio(this.user.condominio);
 
     this.portarias = this.portariaDatabaseService.getLastPortarias();
 
     this.portarias.pipe(
       map(actions => {
         actions.map(a => {
-          console.log("inside Pipe")
+          console.log("inside Pipe");
+          console.log(a.apt);
+
           this.portaria.apt = a.apt;
+          this.user.apt = a.apt;
           const id = '1';
         });
       })).subscribe((val) => {

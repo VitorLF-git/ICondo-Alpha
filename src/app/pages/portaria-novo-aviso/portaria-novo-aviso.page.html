@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color='primary'>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/app/avisos"></ion-back-button>
+      <ion-back-button defaultHref="/app/portaria"></ion-back-button>
     </ion-buttons>
     <ion-title>
       Portaria
@@ -13,20 +13,18 @@
     Caso necessite de ajuda entre em contato com o síndico - Ramal 4422
   </h3>
 
-  <ion-item>
-    <ion-label position="stacked">Escrever manualmente Apartamento</ion-label>
-    <ion-input [(ngModel)]="portaria.apt" placeholder="Escreva Aqui"></ion-input>
-  </ion-item>
-
   <ion-list>
     <ion-label position="stacked">Apartamentos disponíveis</ion-label>
-    <ion-select [(ngModel)]="portaria.apt">
-      <ion-label *ngFor="let user of (userslist | async)">{{user.name}}</ion-label>
+    <ion-select [(ngModel)]="portaria.apt" placeholder="Escolha um apartamento">
       <ion-select-option *ngFor="let user of (userslist | async)">{{user.apt}}</ion-select-option>
     </ion-select>
   </ion-list>
+  <div *ngFor="let user of (userslist | async)">
+    <ion-item *ngIf="user.apt == portaria.apt" color="primary">
+      <ion-label>Morador selecionado: {{user.name}}</ion-label>
+    </ion-item>
+  </div>
 
-  
 
 
   <ion-item *ngIf="custom == false">
@@ -39,7 +37,7 @@
       <ion-select-option value="Encomenda">
         <img [src]="' ../assets/img/good-alert.png '" style="width: 2%; height: 2%;" />
         Encomenda
-      
+
       </ion-select-option>
       <ion-select-option value="Carta">Carta</ion-select-option>
       <ion-select-option value="Visita">Visita</ion-select-option>

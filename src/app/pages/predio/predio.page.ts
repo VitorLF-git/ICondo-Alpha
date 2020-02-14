@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { FCM } from '@ionic-native/fcm/ngx';
 
 import { HttpClient } from '@angular/common/http';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ export class PredioPage implements OnInit {
     private fcm: FCM,
     public plt: Platform,
     private http: HttpClient,
+    private localDatabaseService: LocalDatabaseService,
   ) {
     this.plt.ready()
       .then(() => {
@@ -153,6 +155,7 @@ export class PredioPage implements OnInit {
           console.log("inside Pipe")
           this.userId = a.id;
           this.userDatabaseService.updateUserToken(this.userId, this.localToken);
+          this.localDatabaseService.setCurrentCondominio(a.condominio);
           const id = '1';
         });
       })).subscribe((val) => {

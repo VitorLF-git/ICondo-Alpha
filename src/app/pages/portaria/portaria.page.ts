@@ -6,6 +6,7 @@ import { User, UserDatabaseService } from 'src/app/services/db-services/user-dat
 import { NavController } from '@ionic/angular';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
 import { map } from 'rxjs/operators';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 
 @Component({
@@ -35,21 +36,34 @@ export class PortariaPage implements OnInit {
   private users: Observable<User[]>;
   private date: Date;
   private portarias: Observable<Portaria[]>;
+  private userType: string;
+  private userCondo: string;
+  private confirmedFilter: boolean = false;
+
 
   constructor(
     private portariaService: PortariaDatabaseService,
     private userDatabaseService: UserDatabaseService,
     private authService: AuthenticateService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private localDatabaseService: LocalDatabaseService
   ) { }
 
 
 
   ngOnInit() {
 
-    console.log('Start portarias');
+    this.userCondo = this.localDatabaseService.getCurrentCondominio();
+    this.userType = this.localDatabaseService.getUserType();
 
-    this.portarias = this.portariaService.getPortarias();
+    console.log('Start portarias');
+    if (this.userType == 'porteiro') {
+      console.log("user is porteiro")
+      this.portarias = this.portariaService.getPortariasByCondo(this.userCondo);
+    }else{
+      console.log("user is not porteiro")
+      this.portarias = this.portariaService.getPortarias();
+    }
 
     console.log('Get portarias');
 
@@ -78,6 +92,17 @@ export class PortariaPage implements OnInit {
     console.log(id);
 
     this.portariaService.confirmPortariaMorador(id, message);
+  }
+
+  changeConfirmedFilter(){
+    if(this.confirmedFilter == true){
+      this.confirmedFilter = false;
+    }
+    else{
+      this.confirmedFilter = true;
+    }
+
+
   }
 
 

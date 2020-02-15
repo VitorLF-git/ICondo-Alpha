@@ -45,7 +45,7 @@ export class UserDatabaseService {
     return this.users;
   }
 
-  getUsersByApt(apt: string) {
+  getUsersByApt(apt: string, condo: string) {
     
     if (this.authService.userDetails()) {
       this.userEmail = this.authService.userDetails().email;
@@ -53,7 +53,7 @@ export class UserDatabaseService {
     } else {
     }
 
-    this.userCollection = this.afs.collection<User>('user', ref => ref.where('apt', '==', apt));
+    this.userCollection = this.afs.collection<User>('user', ref => ref.where('apt', '==', apt).where('condominio', '==', condo));
     this.users = this.userCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

@@ -14,6 +14,15 @@ export class LocalDatabaseService {
     this.currentCondominio = condominio;
   }
 
+  userType: string;
+
+  getUserType(){
+    return this.userType;
+  }
+  setUserType(condominio: string){
+    this.userType = condominio;
+  }
+
 
   constructor() { }
 }

@@ -15,7 +15,7 @@
 <ion-content fullscreen>
   <ion-card *ngFor="let user of (users | async)" class="ion-user-card" >
     <ion-card-header >
-      <ion-card-subtitle class="ion-card-content-user">{{ user.condominio }}</ion-card-subtitle>
+      <ion-card-subtitle class="ion-card-content-user"> {{user.type}} no {{ user.condominio }}</ion-card-subtitle>
       <ion-card-title class="ion-card-content-user">{{ user.name }}</ion-card-title >
     </ion-card-header>
     <ion-card-content class="ion-card-content-user">

@@ -75,5 +75,10 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --ion-background-color:#e7eef0;
+  --ion-background-color: #e7eef0;
+
+  .ion-card-content-user::first-letter {
+    text-transform: capitalize; 
+
+  }
 }

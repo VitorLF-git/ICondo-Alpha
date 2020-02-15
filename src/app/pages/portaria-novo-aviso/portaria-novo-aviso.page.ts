@@ -40,6 +40,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     confirmed: 'false',
     confirmed2: 'false',
     token: 'notoken',
+    condominio: '',
     date: "no date"
   }
 
@@ -52,6 +53,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     confirmed: 'false',
     confirmed2: 'false',
     token: 'notoken',
+    condominio: '',
     date: "no date"
   }
   custom: boolean = false;
@@ -67,6 +69,7 @@ export class PortariaNovoAvisoPage implements OnInit {
   ngOnInit() {
     console.log(this.custom);
     this.user.condominio = this.localDatabaseService.getCurrentCondominio();
+    this.portaria.condominio = this.localDatabaseService.getCurrentCondominio();
     this.userslist = this.userDatabaseService.getAllUsersOfCondominio(this.user.condominio);
 
     this.portarias = this.portariaDatabaseService.getLastPortarias();
@@ -112,7 +115,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     await loading.present();
 
 
-    this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt);
+    this.users = this.userDatabaseService.getUsersByApt(this.portaria.apt, this.user.condominio);
     console.log("Check Pipe");
     this.users.pipe(
       map(actions => {

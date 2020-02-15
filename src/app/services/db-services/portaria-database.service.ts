@@ -16,6 +16,7 @@ export interface Portaria {
   custom: boolean,
   confirmed: string,
   confirmed2: string,
+  condominio: string,
   token: string,
   date: any
 }
@@ -43,6 +44,11 @@ export class PortariaDatabaseService {
 
   getPortarias(): Observable<Portaria[]> {
     this.getPortariasByEmail();
+    return this.portarias;
+  }
+
+  getPortariasByCondo(condominio): Observable<Portaria[]> {
+    this.getPortariasByCondoFromDB(condominio);
     return this.portarias;
   }
 
@@ -114,6 +120,23 @@ export class PortariaDatabaseService {
 
     console.log("make collection")
     this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.where('email', '==', this.userEmail).orderBy("date", "desc").limit(10));
+    this.portarias = this.portariaCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          console.log("new change")
+
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  getPortariasByCondoFromDB(condominio) {
+
+    console.log("make collection")
+    this.portariaCollection = this.afs.collection<Portaria>('portaria', ref => ref.where('condominio', '==', condominio).orderBy("date", "desc").limit(20));
     this.portarias = this.portariaCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

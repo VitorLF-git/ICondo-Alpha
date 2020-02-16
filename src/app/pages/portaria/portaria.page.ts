@@ -39,6 +39,7 @@ export class PortariaPage implements OnInit {
   private userType: string;
   private userCondo: string;
   private confirmedFilter: boolean = false;
+  private filterResult: boolean = false;
 
 
   constructor(
@@ -60,7 +61,7 @@ export class PortariaPage implements OnInit {
     if (this.userType == 'porteiro') {
       console.log("user is porteiro")
       this.portarias = this.portariaService.getPortariasByCondo(this.userCondo);
-    }else{
+    } else {
       console.log("user is not porteiro")
       this.portarias = this.portariaService.getPortarias();
     }
@@ -94,13 +95,29 @@ export class PortariaPage implements OnInit {
     this.portariaService.confirmPortariaMorador(id, message);
   }
 
-  changeConfirmedFilter(){
-    if(this.confirmedFilter == true){
+  changeConfirmedFilter() {
+    if (this.confirmedFilter == true) {
       this.confirmedFilter = false;
     }
-    else{
+    else {
       this.confirmedFilter = true;
     }
+
+
+  }
+
+  checkFilter(confirmed1: string, confirmed2: string, confirmedFil: boolean) {
+
+    if (confirmed1 == "true" && confirmed2 == "true" && confirmedFil == true) {
+      return true;
+    }
+    if (confirmed1 == "negative" && confirmedFil == true) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
 
 
   }

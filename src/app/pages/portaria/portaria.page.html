@@ -44,7 +44,7 @@
 
 
       <!-- PARA ENCOMENDA -->
-      <ion-list *ngIf="confirmedFilter == false || portaria.confirmed != 'true' && portaria.confirmed2 != 'true' && confirmedFilter == true">
+      <ion-list *ngIf="checkFilter(portaria.confirmed, portaria.confirmed2, confirmedFilter) == false">
         <ion-item color="primary" *ngIf="userType == 'porteiro' && portaria.content == 'Encomenda'">
           Apartamento: {{portaria.apt}}
         </ion-item>
@@ -84,7 +84,7 @@
 
 
       <!-- PARA CARTAS -->
-      <ion-list *ngIf="confirmedFilter == false || portaria.confirmed != 'true' && portaria.confirmed2 != 'true' && confirmedFilter == true">
+      <ion-list *ngIf="checkFilter(portaria.confirmed, portaria.confirmed2, confirmedFilter) == false">
         <ion-item color="primary" *ngIf="userType == 'porteiro' && portaria.content == 'Carta'">
           Apartamento: {{portaria.apt}}
         </ion-item>
@@ -124,7 +124,7 @@
 
 
       <!-- PARA VISITAS -->
-      <ion-list *ngIf="confirmedFilter == false || portaria.confirmed != 'true' && portaria.confirmed2 != 'true' && confirmedFilter == true">
+      <ion-list *ngIf="checkFilter(portaria.confirmed, portaria.confirmed2, confirmedFilter) == false">
         <ion-item color="primary" *ngIf="userType == 'porteiro' && portaria.content == 'Visita'">
           Apartamento: {{portaria.apt}}
         </ion-item>
@@ -163,7 +163,7 @@
       </ion-list>
       <!-- PARA COMIDA -->
 
-      <ion-list *ngIf="confirmedFilter == false || portaria.confirmed != 'true' && portaria.confirmed2 != 'true' && confirmedFilter == true">
+      <ion-list *ngIf="checkFilter(portaria.confirmed, portaria.confirmed2, confirmedFilter) == false">
         <ion-item color="primary" *ngIf="userType == 'porteiro' && portaria.content == 'Alimentos'">
           Apartamento: {{portaria.apt}}
         </ion-item>
@@ -202,7 +202,7 @@
 
 
       <!-- PARA OUTROS -->
-      <ion-list *ngIf="confirmedFilter == false || portaria.confirmed != 'true' && portaria.confirmed2 != 'true' && confirmedFilter == true">
+      <ion-list *ngIf="checkFilter(portaria.confirmed, portaria.confirmed2, confirmedFilter) == false">
         <ion-item color="primary" *ngIf="userType == 'porteiro' && portaria.custom == true">
           Apartamento: {{portaria.apt}}
         </ion-item>

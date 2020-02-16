@@ -34,10 +34,10 @@ export class RegisterPage implements OnInit {
     code: '',
   }
 
-  private users: Observable<User[]>;
-  private code: string = '';
-  private condominioIsTrue: boolean = false;
-  private condominios: Observable<Condominio[]>;
+   users: Observable<User[]>;
+   code: string = '';
+   condominioIsTrue: boolean = false;
+   condominios: Observable<Condominio[]>;
 
   validations_form: FormGroup;
   errorMessage: string = '';

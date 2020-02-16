@@ -16,7 +16,7 @@ import { LocalDatabaseService } from './../../services/local/local-database.serv
 })
 export class PortariaPage implements OnInit {
 
-  private portaria: Portaria;
+   portaria: Portaria;
 
   userEmail: string;
 
@@ -33,13 +33,13 @@ export class PortariaPage implements OnInit {
     date: "no date"
 
   };
-  private users: Observable<User[]>;
-  private date: Date;
-  private portarias: Observable<Portaria[]>;
-  private userType: string;
-  private userCondo: string;
-  private confirmedFilter: boolean = false;
-  private filterResult: boolean = false;
+   users: Observable<User[]>;
+   date: Date;
+   portarias: Observable<Portaria[]>;
+   userType: string;
+   userCondo: string;
+   confirmedFilter: boolean = false;
+   filterResult: boolean = false;
 
 
   constructor(

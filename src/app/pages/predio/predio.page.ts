@@ -35,11 +35,11 @@ export class PredioPage implements OnInit {
   };
 
 
-  private runOnceGetToken: string = '1';
-  private users: Observable<User[]>;
+   runOnceGetToken: string = '1';
+   users: Observable<User[]>;
 
-  private userId: string = 'noid'
-  private localToken: string = 'notoken';
+   userId: string = 'noid'
+   localToken: string = 'notoken';
 
   constructor(
     private navCtrl: NavController,

@@ -27,9 +27,9 @@ export class PredioPerfilPage implements OnInit {
     date: "no date"
 
   };
-  private users: Observable<User[]>;
+   users: Observable<User[]>;
 
-  constructor( private navCtrl: NavController,
+  constructor(  navCtrl: NavController,
     private authService: AuthenticateService,
     private userDatabaseService: UserDatabaseService,
     private router: Router,) { }

@@ -3,7 +3,6 @@ import { Portaria, PortariaDatabaseService } from 'src/app/services/db-services/
 import { ToastController, ModalController, LoadingController } from '@ionic/angular';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
 import { Observable } from 'rxjs';
-import { PortariaConfirmationPage } from './../../popups/portaria-confirmation/portaria-confirmation.page';
 import { map, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { LocalDatabaseService } from './../../services/local/local-database.service';
@@ -26,9 +25,9 @@ export class PortariaNovoAvisoPage implements OnInit {
     condominio: '',
     date: "no date"
   };
-  private users: Observable<User[]>;
-  private userslist: Observable<User[]>;
-  private portarias: Observable<Portaria[]>;
+   users: Observable<User[]>;
+   userslist: Observable<User[]>;
+   portarias: Observable<Portaria[]>;
 
 
   portaria: Portaria = {
@@ -153,6 +152,15 @@ export class PortariaNovoAvisoPage implements OnInit {
       showCloseButton: true,
       closeButtonText: "Fechar"
     }).then(toast => toast.present());
+  }
+
+  clearContent(){
+    if (this.portaria.content == ""){
+      this.portaria.content = "Encomenda";
+    }
+    else{
+      this.portaria.content = "";
+    }
   }
 
   // async presentModal() {

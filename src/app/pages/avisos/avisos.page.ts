@@ -12,8 +12,8 @@ import { LocalDatabaseService } from './../../services/local/local-database.serv
 })
 export class AvisosPage implements OnInit {
 
-  private avisos: Observable<Aviso[]>;
-  private currentCondominio: string;
+   avisos: Observable<Aviso[]>;
+   currentCondominio: string;
 
   constructor(private avisoService: AvisoDatabaseService,
     private authService: AuthenticateService,

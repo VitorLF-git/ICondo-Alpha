@@ -8,12 +8,15 @@ import { PredioSalaoPageRoutingModule } from './predio-salao-routing.module';
 
 import { PredioSalaoPage } from './predio-salao.page';
 
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PredioSalaoPageRoutingModule
+    PredioSalaoPageRoutingModule,
+    NgCalendarModule
   ],
   declarations: [PredioSalaoPage]
 })

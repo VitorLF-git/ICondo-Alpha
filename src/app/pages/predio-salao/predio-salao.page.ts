@@ -2,6 +2,10 @@ import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
+import { EventCalendario, CalendarioDatabaseService } from './../../services/db-services/calendario-database.service';
+import { Observable, from, of } from 'rxjs';
+import { map, delay } from 'rxjs/operators';
+import { LocalDatabaseService } from './../../services/local/local-database.service';
 
 @Component({
   selector: 'app-predio-salao',
@@ -9,16 +13,23 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./predio-salao.page.scss'],
 })
 export class PredioSalaoPage implements OnInit {
-    event = {
-      title: '',
-      desc: '',
-      startTime: '',
-      endTime: '',
-      allDay: false
-    };
 
+  event: EventCalendario = {
+    title: '',
+    desc: '',
+    startTime: '',
+    endTime: '',
+    allDay: false,
+    condominio: '',
+    creationDate: '',
+  };
+  events: Observable<EventCalendario[]>;
   minDate = new Date().toISOString();
 
+  eventArray: EventCalendario[];
+
+  collapseCard: boolean = true;
+  currentCondo: string = "";
   eventSource = [];
   viewTitle;
 
@@ -29,10 +40,41 @@ export class PredioSalaoPage implements OnInit {
 
   @ViewChild(CalendarComponent, { static: true }) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string) { }
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string, private calendarioDatabaseService: CalendarioDatabaseService, private localDatabaseService : LocalDatabaseService) { }
 
   ngOnInit() {
     this.resetEvent();
+    this.currentCondo = this.localDatabaseService.getCurrentCondominio();
+    this.event.condominio = this.currentCondo;
+
+    this.events = this.calendarioDatabaseService.getCalendarios(this.currentCondo);
+    console.log(this.events);
+    // const getData = (param) => {
+    //   return of(`retrieved new data with param ${param}`).pipe(
+    //     delay(1000)
+    //   )
+    // }
+    
+    // // using a regular map
+    // from([1,2,3,4]).pipe(
+    //   map(param => getData(param))
+    // ).subscribe(val => val.subscribe(data => console.log(data)));
+    
+    this.events.pipe(
+      map(actions => {
+        actions.map(a => {
+          console.log("inside Pipe salao")
+          this.event = a;
+          this.addEvent();
+          const id = '1';
+          this.resetEvent();
+        });
+      }))
+      .subscribe((val) => {
+        console.log("subscribe")
+      }, (error) => {
+        console.log('Error: ', error);
+      });
   }
 
   resetEvent() {
@@ -41,10 +83,17 @@ export class PredioSalaoPage implements OnInit {
       desc: '',
       startTime: new Date().toISOString(),
       endTime: new Date().toISOString(),
-      allDay: false
+      allDay: false,
+      condominio: this.currentCondo,
+      creationDate: '',
     };
   }
 
+  addEventToDB(){
+    this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
+
+    this.addEvent();
+  }
   // Create the right event format and reload source
   addEvent() {
     let eventCopy = {

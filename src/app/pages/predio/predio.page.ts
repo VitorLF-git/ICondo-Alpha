@@ -156,6 +156,7 @@ export class PredioPage implements OnInit {
           this.userId = a.id;
           this.userDatabaseService.updateUserToken(this.userId, this.localToken);
           this.localDatabaseService.setCurrentCondominio(a.condominio);
+          console.log(this.localDatabaseService.getCurrentCondominio());
           this.localDatabaseService.setUserType(a.type);
           const id = '1';
         });

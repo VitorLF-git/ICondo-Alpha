@@ -9,8 +9,7 @@
   </ion-toolbar>
 </ion-header>
  
-<ion-content>
- 
+<ion-content> 
   <!-- Card for adding a new event -->
   <ion-card>
     <ion-card-header tappable (click)="collapseCard = !collapseCard">
@@ -28,6 +27,7 @@
         <ion-label>Início</ion-label>
         <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
       </ion-item>
+      
       <ion-item>
         <ion-label>Fim</ion-label>
         <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
@@ -36,7 +36,7 @@
         <ion-label>Dia todo?</ion-label>
         <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
       </ion-item>
-      <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="event.title == ''">Agendar</ion-button>
+      <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">Agendar</ion-button>
  
     </ion-card-content>
   </ion-card>
@@ -54,14 +54,14 @@
     </ion-col>
  
     <!-- Move back one screen of the slides -->
-    <ion-col size="6" text-left>
+    <ion-col size="6" class="ion-text-left">
       <ion-button fill="clear" (click)="back()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
  
     <!-- Move forward one screen of the slides -->
-    <ion-col size="6" text-right>
+    <ion-col size="6" class="ion-text-right">
       <ion-button fill="clear" (click)="next()">
         <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
       </ion-button>

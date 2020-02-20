@@ -25,7 +25,7 @@ export interface EventCalendario {
 })
 export class CalendarioDatabaseService {
 
-
+  currentDate: any;
   userEmail: string;
   private calendarios: Observable<EventCalendario[]>;
   private calendarioCollection: AngularFirestoreCollection<EventCalendario>;
@@ -78,13 +78,15 @@ export class CalendarioDatabaseService {
       this.userEmail = this.authService.userDetails().email;
     } else {
     }
+    this.currentDate = new Date().toISOString();
+    console.log("current date");
+    console.log(this.currentDate);
 
-
-    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).orderBy("creationDate", "desc").limit(10));
+    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).where('endTime', '>', this.currentDate).limit(10));
     this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
-          const data = a.payload.doc.data();
+          const data = a.payload.doc.data();  
           const id = a.payload.doc.id;
           return { id, ...data };
         });

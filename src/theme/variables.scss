@@ -81,4 +81,21 @@
     text-transform: capitalize; 
 
   }
+
+  .monthview-current .calendar-event-inner {
+    background-color: red !important;
+  }
+  
+  .monthview-primary-with-event .calendar-event-inner {
+    background-color: red !important;
+  }
+  
+  .weekview-allday-content-table .calendar-event-inner {
+    background-color: red !important;
+  }
+  
+  .monthview-datetable td.monthview-primary-with-event {
+    background-color: red !important;
+  }
+  
 }

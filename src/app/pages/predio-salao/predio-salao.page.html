@@ -31,19 +31,31 @@
           <ion-input type="text" placeholder="Descrição" [(ngModel)]="event.desc"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label>Início</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime"
+          <ion-label>Dia</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
             [min]="minDate"></ion-datetime>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <ion-label>Fim</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"
+          <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.endTime"
             [min]="minDate"></ion-datetime>
-        </ion-item>
+        </ion-item> -->
         <ion-item>
           <ion-label>Dia todo?</ion-label>
           <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Manhã?</ion-label>
+          <ion-checkbox [(ngModel)]="event.morning"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tarde?</ion-label>
+          <ion-checkbox [(ngModel)]="event.afternoon"></ion-checkbox>
+        </ion-item>
+        <ion-item>
+          <ion-label>Noite?</ion-label>
+          <ion-checkbox [(ngModel)]="event.night"></ion-checkbox>
         </ion-item>
         <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">Agendar
         </ion-button>

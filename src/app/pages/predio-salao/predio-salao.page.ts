@@ -3,7 +3,7 @@ import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { EventCalendario, CalendarioDatabaseService } from './../../services/db-services/calendario-database.service';
-import { Observable, from, of } from 'rxjs';
+import { Observable, from, of, Subscription } from 'rxjs';
 import { map, delay } from 'rxjs/operators';
 import { LocalDatabaseService } from './../../services/local/local-database.service';
 
@@ -20,13 +20,18 @@ export class PredioSalaoPage implements OnInit {
     startTime: '',
     endTime: '',
     allDay: false,
+    morning: false,
+    afternoon: false,
+    night: false,
     condominio: '',
     creationDate: '',
   };
   events: Observable<EventCalendario[]>;
   minDate = new Date().toISOString();
-
+  runOnce: boolean = false;
   eventArray: EventCalendario[];
+
+  subscription : Subscription;
 
   collapseCard: boolean = true;
   currentCondo: string = "";
@@ -40,41 +45,47 @@ export class PredioSalaoPage implements OnInit {
 
   @ViewChild(CalendarComponent, { static: true }) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string, private calendarioDatabaseService: CalendarioDatabaseService, private localDatabaseService : LocalDatabaseService) { }
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string, private calendarioDatabaseService: CalendarioDatabaseService, private localDatabaseService: LocalDatabaseService) { }
 
   ngOnInit() {
-    this.resetEvent();
-    this.currentCondo = this.localDatabaseService.getCurrentCondominio();
-    this.event.condominio = this.currentCondo;
 
-    this.events = this.calendarioDatabaseService.getCalendarios(this.currentCondo);
-    console.log(this.events);
-    // const getData = (param) => {
-    //   return of(`retrieved new data with param ${param}`).pipe(
-    //     delay(1000)
-    //   )
-    // }
-    
-    // // using a regular map
-    // from([1,2,3,4]).pipe(
-    //   map(param => getData(param))
-    // ).subscribe(val => val.subscribe(data => console.log(data)));
-    
-    this.events.pipe(
-      map(actions => {
-        actions.map(a => {
-          console.log("inside Pipe salao")
-          this.event = a;
-          this.addEvent();
-          const id = '1';
-          this.resetEvent();
+    if (this.runOnce == false) {
+      this.resetEvent();
+      this.currentCondo = this.localDatabaseService.getCurrentCondominio();
+      this.event.condominio = this.currentCondo;
+
+      this.events = this.calendarioDatabaseService.getCalendarios(this.currentCondo);
+      console.log(this.events);
+      // const getData = (param) => {
+      //   return of(`retrieved new data with param ${param}`).pipe(
+      //     delay(1000)
+      //   )
+      // }
+
+      // // using a regular map
+      // from([1,2,3,4]).pipe(
+      //   map(param => getData(param))
+      // ).subscribe(val => val.subscribe(data => console.log(data)));
+
+      this.subscription = this.events.pipe(
+        map(actions => {
+          actions.map(a => {
+            console.log("inside Pipe salao")
+            this.event = a;
+            this.addEvent();
+            const id = '1';
+            this.resetEvent();
+          });
+        }))
+        .subscribe((val) => {
+          console.log("subscribe")
+        }, (error) => {
+          console.log('Error: ', error);
         });
-      }))
-      .subscribe((val) => {
-        console.log("subscribe")
-      }, (error) => {
-        console.log('Error: ', error);
-      });
+        
+    }
+    this.runOnce = true;
+
   }
 
   resetEvent() {
@@ -83,23 +94,37 @@ export class PredioSalaoPage implements OnInit {
       desc: '',
       startTime: new Date().toISOString(),
       endTime: new Date().toISOString(),
+      morning: false,
+      afternoon: false,
+      night: false,
       allDay: false,
       condominio: this.currentCondo,
       creationDate: '',
     };
   }
 
-  addEventToDB(){
+  addEventToDB() {
+    this.subscription.unsubscribe();
+
     this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
+    console.log("Add to DB");
 
     this.addEvent();
+    console.log("Add event");
+
+
   }
   // Create the right event format and reload source
   addEvent() {
+    this.event.endTime = this.event.startTime;
+
     let eventCopy = {
       title: this.event.title,
       startTime: new Date(this.event.startTime),
       endTime: new Date(this.event.endTime),
+      morning: this.event.morning,
+      afternoon: this.event.afternoon,
+      night: this.event.night,
       allDay: this.event.allDay,
       desc: this.event.desc,
       eventColor: 'red'
@@ -112,9 +137,32 @@ export class PredioSalaoPage implements OnInit {
       eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
       eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
     }
+    if (eventCopy.morning) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 9));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 14));
+    }
+    if (eventCopy.afternoon) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 15));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 20));
+    }
+    if (eventCopy.night) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 21));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 26));
+    }
+
 
     this.eventSource.push(eventCopy);
     this.myCal.loadEvents();
+    console.log("load events");
     this.resetEvent();
   }
 

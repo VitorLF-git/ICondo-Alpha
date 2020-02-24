@@ -13,7 +13,10 @@ export interface EventCalendario {
   desc: string,
   startTime: string,
   endTime: string,
-  allDay: false
+  morning: boolean,
+  afternoon: boolean,
+  night: boolean,
+  allDay: boolean,
   condominio: string,
   creationDate: any,
 }

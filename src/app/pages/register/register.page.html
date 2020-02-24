@@ -4,15 +4,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" >
-  <ion-item *ngIf="condominioIsTrue == false">
-    <ion-label position="floating" color="primary">Código do condomínio</ion-label>
-    <ion-input [(ngModel)]="code"></ion-input>
-    <ion-button (click)="checkCode()">Confirmar</ion-button>
-  </ion-item>
-  <ion-item>
-    <h3>{{condominio.name}}</h3>
-  </ion-item>
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item *ngIf="condominioIsTrue == false">
+      <ion-label position="floating" color="primary">Código do condomínio</ion-label>
+      <ion-input [(ngModel)]="code"></ion-input>
+    </ion-item>
+      <ion-button (click)="checkCode()">Confirmar</ion-button>
+    <ion-item *ngIf="condominioIsTrue == true">
+      <h3>{{condominio.name}}</h3>
+    </ion-item>
+  </ion-list>
   <ion-list *ngIf="condominioIsTrue == true">
     <ion-item>
       <ion-label position="floating" color="primary">Nome</ion-label>

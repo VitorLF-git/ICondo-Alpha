@@ -33,7 +33,7 @@
         <ion-item>
           <ion-label>Dia</ion-label>
           <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
-            [min]="minDate"></ion-datetime>
+            [min]="minDate" (ionChange)="dateCheck()"></ion-datetime>
         </ion-item>
 
         <!-- <ion-item>
@@ -41,21 +41,31 @@
           <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.endTime"
             [min]="minDate"></ion-datetime>
         </ion-item> -->
-        <ion-item>
+        <!-- <ion-item>
           <ion-label>Dia todo?</ion-label>
           <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
-        </ion-item>
+        </ion-item> -->
+
         <ion-item>
           <ion-label>Manhã?</ion-label>
-          <ion-checkbox [(ngModel)]="event.morning"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="event.morning" [disabled]="event.afternoon || event.night || isMorningBlocked"></ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="isMorningBlocked">
+          <ion-label color="danger">O período da manhã não está disponível!</ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Tarde?</ion-label>
-          <ion-checkbox [(ngModel)]="event.afternoon"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="event.afternoon" [disabled]="event.morning || event.night || isAfternoonBlocked"></ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="isAfternoonBlocked">
+          <ion-label color="danger">O período da tarde não está disponível!</ion-label>
         </ion-item>
         <ion-item>
           <ion-label>Noite?</ion-label>
-          <ion-checkbox [(ngModel)]="event.night"></ion-checkbox>
+          <ion-checkbox [(ngModel)]="event.night" [disabled]="event.afternoon || event.morning || isNightBlocked"></ion-checkbox>
+        </ion-item>
+        <ion-item *ngIf="isNightBlocked">
+          <ion-label color="danger">O período da noite não está disponível!</ion-label>
         </ion-item>
         <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">Agendar
         </ion-button>

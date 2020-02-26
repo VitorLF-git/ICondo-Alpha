@@ -31,6 +31,22 @@ export class PredioSalaoPage implements OnInit {
   runOnce: boolean = false;
   eventArray: EventCalendario[];
 
+  blockingArray: string[] = [];
+  blockingArrayResult: string [] = [];
+
+  blockingArrayResultMorning: string;
+  blockingArrayResultAfternoon: string;
+  blockingArrayResultNight: string;
+
+
+  eventDate: string;
+
+  eventCopyString: string;
+
+  isMorningBlocked: boolean = false;
+  isAfternoonBlocked: boolean = false;
+  isNightBlocked: boolean = false;
+
   subscription : Subscription;
 
   collapseCard: boolean = true;
@@ -73,6 +89,7 @@ export class PredioSalaoPage implements OnInit {
             console.log("inside Pipe salao")
             this.event = a;
             this.addEvent();
+            
             const id = '1';
             this.resetEvent();
           });
@@ -106,6 +123,7 @@ export class PredioSalaoPage implements OnInit {
   addEventToDB() {
     this.subscription.unsubscribe();
 
+
     this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
     console.log("Add to DB");
 
@@ -116,6 +134,7 @@ export class PredioSalaoPage implements OnInit {
   }
   // Create the right event format and reload source
   addEvent() {
+
     this.event.endTime = this.event.startTime;
 
     let eventCopy = {
@@ -159,11 +178,14 @@ export class PredioSalaoPage implements OnInit {
       eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 26));
     }
 
+    this.eventCopyString = eventCopy.startTime.toUTCString();
 
     this.eventSource.push(eventCopy);
     this.myCal.loadEvents();
     console.log("load events");
+    this.blockingArray.push(this.eventCopyString);
     this.resetEvent();
+
   }
 
   // Change current month/week/day
@@ -213,6 +235,63 @@ export class PredioSalaoPage implements OnInit {
     this.event.startTime = selected.toISOString();
     selected.setHours(selected.getHours() + 1);
     this.event.endTime = (selected.toISOString());
+  }
+
+  
+
+  dateCheck(){
+    console.log(this.blockingArray);
+    this.eventDate = new Date(this.event.startTime).toUTCString();
+    console.log(this.eventDate.substr(17));
+
+    this.blockingArrayResult = this.blockingArray.filter(s => s.includes(this.eventDate.substr(0, 11)));
+    this.blockingArrayResultMorning = this.blockingArrayResult.find(s => s.includes("09:00:00"));
+    this.blockingArrayResultAfternoon = this.blockingArrayResult.find(s => s.includes("15:00:00"));
+    this.blockingArrayResultNight = this.blockingArrayResult.find(s => s.includes("21:00:00"));
+    console.log(this.blockingArrayResult);
+
+    if(this.blockingArrayResult == []){
+      this.isMorningBlocked = false;
+      this.isAfternoonBlocked = false;
+      this.isNightBlocked  = false;
+    }
+
+    if(this.blockingArrayResultMorning == undefined){
+      this.isMorningBlocked = false;
+      console.log("122");
+    }
+    else{
+      console.log("12");
+
+      console.log(this.blockingArrayResultMorning);
+      this.isMorningBlocked = true;
+      console.log("12");
+
+    }
+    if(this.blockingArrayResultAfternoon == undefined){
+      this.isAfternoonBlocked = false;
+      console.log("122");
+    }
+    else{
+      this.isAfternoonBlocked = true;
+      console.log("12");
+
+    }
+    if(this.blockingArrayResultNight == undefined){
+      this.isNightBlocked = false;
+      console.log("122");
+    }
+    else{
+      this.isNightBlocked = true;
+      console.log("12");
+
+    }
+
+    
+    
+
+    
+
   }
 
 }

@@ -15,7 +15,11 @@
 <ion-content>
 
 
-  
+  <ion-item>
+    <ion-label>Dia selecionado</ion-label>
+    <ion-datetime readonly="true" displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
+      [min]="minDate" (ionChange)="dateCheck()"></ion-datetime>
+  </ion-item>
 
     <!-- Card for adding a new event -->
     <ion-card>
@@ -33,7 +37,7 @@
         <ion-item>
           <ion-label>Dia</ion-label>
           <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
-            [min]="minDate" (ionChange)="dateCheck()"></ion-datetime>
+            [min]="minDate"></ion-datetime>
         </ion-item>
 
         <!-- <ion-item>

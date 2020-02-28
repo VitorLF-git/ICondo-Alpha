@@ -158,6 +158,7 @@ export class PredioPage implements OnInit {
           this.localDatabaseService.setCurrentCondominio(a.condominio);
           console.log(this.localDatabaseService.getCurrentCondominio());
           this.localDatabaseService.setUserType(a.type);
+          this.localDatabaseService.setUserApt(a.apt);
           const id = '1';
         });
       })).subscribe((val) => {

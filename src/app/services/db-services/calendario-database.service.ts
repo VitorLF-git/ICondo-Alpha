@@ -19,6 +19,7 @@ export interface EventCalendario {
   allDay: boolean,
   condominio: string,
   creationDate: any,
+  apt: string,
 }
 
 
@@ -63,15 +64,33 @@ export class CalendarioDatabaseService {
     return this.calendarioCollection.add(calendario);
   }
 
+  getCalendarioByApt(apt: string, condo: string) {
+    
+
+    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('apt', '==', apt).where('condominio', '==', condo));
+    this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+
+    
+
+    return this.calendarios;
+  }
+
+
   updateCalendario(calendario: EventCalendario, condominio): Promise<void> {
     this.getCalendariosByCondominio(condominio);
 
     return this.calendarioCollection.doc(calendario.id).update({ name: calendario.title, notes: calendario.desc });
   }
 
-  deleteCalendario(id: string, condominio): Promise<void> {
-    this.getCalendariosByCondominio(condominio);
-
+  deleteCalendario(id: string): Promise<void> {
     return this.calendarioCollection.doc(id).delete();
   }
 
@@ -85,7 +104,7 @@ export class CalendarioDatabaseService {
     console.log("current date");
     console.log(this.currentDate);
 
-    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).where('endTime', '>', this.currentDate).limit(10));
+    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).where('endTime', '>', this.currentDate));
     this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

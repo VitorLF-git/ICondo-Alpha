@@ -23,6 +23,15 @@ export class LocalDatabaseService {
     this.userType = condominio;
   }
 
+  userApt: string;
+
+  getUserApt(){
+    return this.userApt;
+  }
+  setUserApt(condominio: string){
+    this.userApt = condominio;
+  }
+
 
   constructor() { }
 }

@@ -1,5 +1,5 @@
 import { CalendarComponent } from 'ionic2-calendar/calendar';
-import { Component, ViewChild, OnInit, Inject, LOCALE_ID } from '@angular/core';
+import { Component, ViewChild, OnInit, Inject, LOCALE_ID, OnChanges } from '@angular/core';
 import { AlertController, ToastController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { EventCalendario, CalendarioDatabaseService } from './../../services/db-services/calendario-database.service';
@@ -12,7 +12,8 @@ import { LocalDatabaseService } from './../../services/local/local-database.serv
   templateUrl: './predio-salao.page.html',
   styleUrls: ['./predio-salao.page.scss'],
 })
-export class PredioSalaoPage implements OnInit {
+export class PredioSalaoPage implements OnInit, OnChanges {
+
 
   event: EventCalendario = {
     title: '',
@@ -57,7 +58,7 @@ export class PredioSalaoPage implements OnInit {
   };
 
   eventDeletionArray = [];
-  eventDeletionID : string = '';
+  eventDeletionID: string = '';
 
   events: Observable<EventCalendario[]>;
   eventsForDeletion: Observable<EventCalendario[]>;
@@ -86,6 +87,8 @@ export class PredioSalaoPage implements OnInit {
   subscription: Subscription;
   subscriptionDeletion: Subscription;
 
+  arrayResult2: string[] = [];
+
   collapseCard: boolean = true;
   currentCondo: string = "";
   eventSource = [];
@@ -98,10 +101,10 @@ export class PredioSalaoPage implements OnInit {
 
   @ViewChild(CalendarComponent, { static: true }) myCal: CalendarComponent;
 
-  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string, 
-  private calendarioDatabaseService: CalendarioDatabaseService, 
-  private localDatabaseService: LocalDatabaseService,
-  private toastCtrl: ToastController ) { }
+  constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string,
+    private calendarioDatabaseService: CalendarioDatabaseService,
+    private localDatabaseService: LocalDatabaseService,
+    private toastCtrl: ToastController) { }
 
   ngOnInit() {
 
@@ -133,18 +136,12 @@ export class PredioSalaoPage implements OnInit {
             }
 
             this.eventDeletionArray.push(eventCopy2);
-            console.log("copy");
-
-            console.log(this.eventDeletionCopy);
-            console.log("array");
-
-            console.log(this.eventDeletionArray);
 
 
           });
         }))
         .subscribe((val) => {
-          console.log("subscribe")
+
         }, (error) => {
           console.log('Error: ', error);
         });
@@ -166,20 +163,27 @@ export class PredioSalaoPage implements OnInit {
       // from([1,2,3,4]).pipe(
       //   map(param => getData(param))
       // ).subscribe(val => val.subscribe(data => console.log(data)));
-
       this.subscription = this.events.pipe(
         map(actions => {
-          actions.map(a => {
-            console.log("inside Pipe salao")
-            this.event = a;
-            this.addEvent();
 
-            const id = '1';
+          console.log(actions);
+
+          actions.map(a => {
+            if (this.arrayResult2.find(x => x.includes(a.id))) {
+            }
+            else {
+              this.eventSource.push(this.validationBullshit(a));            
+              this.arrayResult2.push(a.id);
+              this.myCal.loadEvents();
+            }
+            // this.event = a;
+            // this.addEvent();
+
             this.resetEvent();
           });
         }))
         .subscribe((val) => {
-          console.log("subscribe")
+          console.log("subscribe");
         }, (error) => {
           console.log('Error: ', error);
         });
@@ -189,6 +193,14 @@ export class PredioSalaoPage implements OnInit {
 
   }
 
+  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+    if (changes.eventSource) {
+
+      // this.myCal.loadEvents();   observação UMA BOSTA
+
+
+    }
+  }
   resetEvent() {
     this.event = {
       title: '',
@@ -206,16 +218,64 @@ export class PredioSalaoPage implements OnInit {
   }
 
   addEventToDB() {
-    this.subscription.unsubscribe();
-    this.event.apt = this.localDatabaseService.getUserApt();
-    this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
-    console.log("Add to DB");
 
-    this.addEvent();
-    console.log("Add event");
+    this.event.apt = this.localDatabaseService.getUserApt();
+    console.log(this.event);
+    this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
+
+    // this.eventSource.push(this.validationBullshit(this.event));
 
 
   }
+  validationBullshit(pedro) {
+
+    let eventCopy = {
+      title: pedro.title,
+      startTime: new Date(pedro.startTime),
+      endTime: new Date(pedro.endTime),
+      morning: pedro.morning,
+      afternoon: pedro.afternoon,
+      night: pedro.night,
+      allDay: pedro.allDay,
+      desc: pedro.desc,
+      eventColor: 'red'
+    }
+
+    eventCopy.endTime = eventCopy.startTime;
+
+    if (eventCopy.allDay) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
+    }
+    if (eventCopy.morning) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 9));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 14));
+    }
+    if (eventCopy.afternoon) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 15));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 20));
+    }
+    if (eventCopy.night) {
+      let start = eventCopy.startTime;
+      let end = eventCopy.endTime;
+
+      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 21));
+      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 26));
+    }
+
+    return eventCopy;
+
+  }
+
   // Create the right event format and reload source
   addEvent() {
 
@@ -232,6 +292,8 @@ export class PredioSalaoPage implements OnInit {
       desc: this.event.desc,
       eventColor: 'red'
     }
+
+    eventCopy.endTime = eventCopy.startTime;
 
     if (eventCopy.allDay) {
       let start = eventCopy.startTime;
@@ -264,10 +326,13 @@ export class PredioSalaoPage implements OnInit {
 
     this.eventCopyString = eventCopy.startTime.toUTCString();
 
-    this.eventSource.push(eventCopy);
-    this.myCal.loadEvents();
-    console.log("load events");
+    // this.eventSource.push(eventCopy);
+
     this.blockingArray.push(this.eventCopyString);
+
+
+    console.log(this.eventSource);
+
     this.resetEvent();
 
   }
@@ -324,15 +389,12 @@ export class PredioSalaoPage implements OnInit {
 
 
   dateCheck() {
-    console.log(this.blockingArray);
     this.eventDate = new Date(this.event.startTime).toUTCString();
-    console.log(this.eventDate.substr(17));
 
     this.blockingArrayResult = this.blockingArray.filter(s => s.includes(this.eventDate.substr(0, 11)));
     this.blockingArrayResultMorning = this.blockingArrayResult.find(s => s.includes("09:00:00"));
     this.blockingArrayResultAfternoon = this.blockingArrayResult.find(s => s.includes("15:00:00"));
     this.blockingArrayResultNight = this.blockingArrayResult.find(s => s.includes("21:00:00"));
-    console.log(this.blockingArrayResult);
 
     if (this.blockingArrayResult == []) {
       this.isMorningBlocked = false;
@@ -342,32 +404,24 @@ export class PredioSalaoPage implements OnInit {
 
     if (this.blockingArrayResultMorning == undefined) {
       this.isMorningBlocked = false;
-      console.log("122");
     }
     else {
-      console.log("12");
 
-      console.log(this.blockingArrayResultMorning);
       this.isMorningBlocked = true;
-      console.log("12");
 
     }
     if (this.blockingArrayResultAfternoon == undefined) {
       this.isAfternoonBlocked = false;
-      console.log("122");
     }
     else {
       this.isAfternoonBlocked = true;
-      console.log("12");
 
     }
     if (this.blockingArrayResultNight == undefined) {
       this.isNightBlocked = false;
-      console.log("122");
     }
     else {
       this.isNightBlocked = true;
-      console.log("12");
 
     }
 
@@ -380,7 +434,10 @@ export class PredioSalaoPage implements OnInit {
 
   deleteEvent(id) {
     this.calendarioDatabaseService.deleteCalendario(id);
-    
+    let index: number;
+    index = this.eventDeletionArray.findIndex(x => x.id === id);
+    this.eventDeletionArray.splice(index);
+
     this.showToast("Evento apagado com sucesso!");
 
   }

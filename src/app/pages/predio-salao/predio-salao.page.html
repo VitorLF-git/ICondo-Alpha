@@ -17,7 +17,7 @@
 
   <ion-item>
     <ion-label>Dia selecionado</ion-label>
-    <ion-datetime readonly="true" displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
+    <ion-datetime readonly="true" displayFormat="DD/MM/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
       [min]="minDate" (ionChange)="dateCheck()"></ion-datetime>
   </ion-item>
 
@@ -25,7 +25,7 @@
     <ion-label position="stacked">Apagar horários marcados</ion-label>
     <ion-select placeholder="Escolha uma data" [(ngModel)]="eventDeletionID">
       <ion-select-option *ngFor="let event of eventDeletionArray" value='{{event.id}}'>
-        {{event.startTime | date: 'dd-MM-yy'}}</ion-select-option>
+        {{event.startTime}}</ion-select-option>
     </ion-select>
   </ion-list>
   <ion-list>
@@ -49,7 +49,7 @@
 
   <!-- Card for adding a new event -->
   <ion-card>
-    <ion-card-header tappable (click)="collapseCard = !collapseCard">
+    <ion-card-header (click)="collapseCard = !collapseCard">
       <ion-card-title>Agendar</ion-card-title>
     </ion-card-header>
     <ion-card-content *ngIf="!collapseCard">
@@ -62,7 +62,7 @@
       </ion-item>
       <ion-item>
         <ion-label>Dia</ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime" [min]="minDate">
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime" [min]="minDate">
         </ion-datetime>
       </ion-item>
 
@@ -100,7 +100,8 @@
       <ion-item *ngIf="isNightBlocked">
         <ion-label color="danger">O período da noite não está disponível!</ion-label>
       </ion-item>
-      <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">Agendar
+      <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">
+        Agendar
       </ion-button>
 
     </ion-card-content>

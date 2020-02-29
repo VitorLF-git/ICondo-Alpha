@@ -37,7 +37,6 @@ export class CalendarioDatabaseService {
 
   constructor(private afs: AngularFirestore, private authService: AuthenticateService) {
 
-
   }
 
   getCalendarios(condominio: string): Observable<EventCalendario[]> {
@@ -59,7 +58,9 @@ export class CalendarioDatabaseService {
   }
 
   addCalendario(calendario: EventCalendario, condominio): Promise<DocumentReference> {
-    this.getCalendariosByCondominio(condominio);
+    this.getCalendariosByCondominioAndDate(condominio, calendario.startTime);
+    console.log("calendario database add");
+    console.log(this.calendarios);
     calendario.creationDate = firebase.firestore.FieldValue.serverTimestamp();
     return this.calendarioCollection.add(calendario);
   }
@@ -105,6 +106,31 @@ export class CalendarioDatabaseService {
     console.log(this.currentDate);
 
     this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).where('endTime', '>', this.currentDate));
+    this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();  
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+
+
+  }
+
+  
+  getCalendariosByCondominioAndDate(condominio: string, date: string) {
+
+    if (this.authService.userDetails()) {
+      this.userEmail = this.authService.userDetails().email;
+    } else {
+    }
+    this.currentDate = new Date().toISOString();
+    console.log("current date");
+    console.log(this.currentDate);
+
+    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('condominio', '==', condominio).where('endTime', '>', this.currentDate).where('startTime', '==', date));
     this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

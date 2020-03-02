@@ -66,9 +66,10 @@ export class CalendarioDatabaseService {
   }
 
   getCalendarioByApt(apt: string, condo: string) {
+    this.currentDate = new Date().toISOString();
     
 
-    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('apt', '==', apt).where('condominio', '==', condo));
+    this.calendarioCollection = this.afs.collection<EventCalendario>('calendario', ref => ref.where('apt', '==', apt).where('condominio', '==', condo).where('startTime', '>', this.currentDate).orderBy("startTime", "desc"));
     this.calendarios = this.calendarioCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

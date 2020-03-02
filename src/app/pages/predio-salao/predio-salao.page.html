@@ -20,33 +20,25 @@
     <ion-datetime readonly="true" displayFormat="DD/MM/YYYY" pickerFormat="MMM D" [(ngModel)]="event.startTime"
       [min]="minDate" (ionChange)="dateCheck()"></ion-datetime>
   </ion-item>
-
-  <ion-list>
-    <ion-label position="stacked">Apagar horários marcados</ion-label>
-    <ion-select placeholder="Escolha uma data" [(ngModel)]="eventDeletionID">
-      <ion-select-option *ngFor="let event of eventDeletionArray" value='{{event.id}}'>
-        {{event.startTime}}</ion-select-option>
-    </ion-select>
-  </ion-list>
-  <ion-list>
-    {{currentApt}}
-    <div></div>
-    {{currentCondo}}
-    <div></div>
-    {{event123}}
-    <div></div>
-    ID: {{eventDeletionID}}
-    <div></div>
-    {{eventDeletion.startTime}}
-    <div></div>
-
-    <ion-item>
-      <ion-button (click)="deleteEvent(eventDeletionID)" color="danger">
-        Apagar Agendamento
-      </ion-button>
-    </ion-item>
-  </ion-list>
-
+  <ion-card>
+    <ion-card-header (click)="collapseCard2 = !collapseCard2">
+      <ion-card-title>Cancelar Agendamento</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="!collapseCard2">
+      <ion-list>
+        <ion-label position="stacked">Apagar horários marcados</ion-label>
+        <ion-select placeholder="Escolha uma data" [(ngModel)]="eventDeletionID">
+          <ion-select-option *ngFor="let event of eventDeletionArray" value='{{event.id}}'>
+            {{event.startTime | date: 'dd-MMM-yyyy' }} - {{event.startTime | date: 'hh' }} hrs</ion-select-option>
+        </ion-select>
+        <ion-item>
+          <ion-button (click)="deleteEvent(eventDeletionID)" color="danger">
+            Apagar Agendamento
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
   <!-- Card for adding a new event -->
   <ion-card>
     <ion-card-header (click)="collapseCard = !collapseCard">

@@ -88,8 +88,11 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   subscriptionDeletion: Subscription;
 
   arrayResult2: string[] = [];
+  arrayResult3: string[] = [];
+
 
   collapseCard: boolean = true;
+  collapseCard2: boolean = true;
   currentCondo: string = "";
   eventSource = [];
   viewTitle;
@@ -134,9 +137,12 @@ export class PredioSalaoPage implements OnInit, OnChanges {
               allDay: a.allDay,
               desc: a.desc,
             }
-
+            if (this.arrayResult3.find(x => x.includes(a.id))) {
+            }
+            else {
             this.eventDeletionArray.push(eventCopy2);
-
+            this.arrayResult3.push(a.id);
+            }
 
           });
         }))
@@ -174,6 +180,17 @@ export class PredioSalaoPage implements OnInit, OnChanges {
             else {
               this.eventSource.push(this.validationBullshit(a));            
               this.arrayResult2.push(a.id);
+              console.log("event copy string: " + this.eventCopyString);
+              
+              this.eventCopyString = this.validationBullshit(a).startTime.toUTCString();
+              console.log("event copy string change: " + this.eventCopyString);
+              console.log("Blocking array ");
+              console.log(this.blockingArray);
+
+              this.blockingArray.push(this.eventCopyString);
+              console.log("Blocking array after ");
+              console.log(this.blockingArray);
+
               this.myCal.loadEvents();
             }
             // this.event = a;
@@ -195,9 +212,6 @@ export class PredioSalaoPage implements OnInit, OnChanges {
 
   ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
     if (changes.eventSource) {
-
-      // this.myCal.loadEvents();   observação UMA BOSTA
-
 
     }
   }
@@ -277,65 +291,7 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   }
 
   // Create the right event format and reload source
-  addEvent() {
-
-    this.event.endTime = this.event.startTime;
-
-    let eventCopy = {
-      title: this.event.title,
-      startTime: new Date(this.event.startTime),
-      endTime: new Date(this.event.endTime),
-      morning: this.event.morning,
-      afternoon: this.event.afternoon,
-      night: this.event.night,
-      allDay: this.event.allDay,
-      desc: this.event.desc,
-      eventColor: 'red'
-    }
-
-    eventCopy.endTime = eventCopy.startTime;
-
-    if (eventCopy.allDay) {
-      let start = eventCopy.startTime;
-      let end = eventCopy.endTime;
-
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
-    }
-    if (eventCopy.morning) {
-      let start = eventCopy.startTime;
-      let end = eventCopy.endTime;
-
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 9));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 14));
-    }
-    if (eventCopy.afternoon) {
-      let start = eventCopy.startTime;
-      let end = eventCopy.endTime;
-
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 15));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 20));
-    }
-    if (eventCopy.night) {
-      let start = eventCopy.startTime;
-      let end = eventCopy.endTime;
-
-      eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), 21));
-      eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), 26));
-    }
-
-    this.eventCopyString = eventCopy.startTime.toUTCString();
-
-    // this.eventSource.push(eventCopy);
-
-    this.blockingArray.push(this.eventCopyString);
-
-
-    console.log(this.eventSource);
-
-    this.resetEvent();
-
-  }
+ 
 
   // Change current month/week/day
   next() {
@@ -435,8 +391,18 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   deleteEvent(id) {
     this.calendarioDatabaseService.deleteCalendario(id);
     let index: number;
+    let index2: number;
+
     index = this.eventDeletionArray.findIndex(x => x.id === id);
-    this.eventDeletionArray.splice(index);
+    this.eventDeletionArray.splice(index, 1);
+    
+    index2 = this.eventSource.findIndex(x => x.id === id);
+    this.eventSource.splice(index2, 1);
+
+    this.eventDeletionID = this.eventDeletionArray[0];
+
+    this.myCal.loadEvents();
+
 
     this.showToast("Evento apagado com sucesso!");
 

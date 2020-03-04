@@ -27,8 +27,10 @@
     "@ionic/angular": "^4.7.1",
     "cordova-android": "^8.1.0",
     "core-js": "^2.5.4",
+    "cors": "^2.8.5",
     "firebase": "^7.6.1",
     "ionic2-calendar": "^0.5.8",
+    "nodemailer": "^6.4.4",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

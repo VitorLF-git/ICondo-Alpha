@@ -1,25 +1,10 @@
 const functions = require('firebase-functions');
 const cors = require("cors")({ origin: true });
-
-
-
 const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
 admin.initializeApp(functions.config().firebase);
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
-
-exports.helloWorld = functions.https.onRequest((request, response) => {
-    response.send("Hello from Firebase!");
-});
-
-exports.aranha = functions.https.onRequest((request, response) => {
-    cors(request, response, () => {
-
-        response.setHeader('Access-Control-Allow-Origin', '*');
-        response.send({ text: "Hello from Firebase!" });
-    });
-});
-
 
 exports.sendNotification = functions.firestore
     .document('portaria/{userId}')
@@ -118,4 +103,41 @@ exports.sendNotification = functions.firestore
         });
         return Promise.all(tokensToRemove);
     });
+
+
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'contato.icondo@gmail.com',
+        pass: 'Icondo123!'
+    }
+});
+
+exports.sendMail = functions.https.onRequest((req, res) => {
+    cors(req, res, () => {
+
+        // getting dest email by query string
+        const dest = req.query.dest;
+
+        const mailOptions = {
+            from: '<contato.icondo@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+            to: dest,
+            subject: 'contact form message', // email subject
+            html: `<h1>Order Confirmation</h1>` // email content in HTML
+        };
+
+        // returning result
+        return transporter.sendMail(mailOptions, (erro, info) => {
+            if (erro) {
+                return res.send(erro.toString());
+            }
+            return res.send(dest);
+        });
+    });
+});
 // dw9TNDOf9BA:APA91bFC6WLz2fl5kg-Vf_zDmhs1ROzR5O5w1Q7_lKw6ieLNYEfTHcJ2lmgjNkIDM31G0m-Q1LvRmd9BfIoBCC20keDC-Swh8EJeRKZvYBMWo5DjDqhGwrlMrwetohXfIsbgXs4ZZnUo

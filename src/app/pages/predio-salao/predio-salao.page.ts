@@ -6,6 +6,7 @@ import { EventCalendario, CalendarioDatabaseService } from './../../services/db-
 import { Observable, from, of, Subscription } from 'rxjs';
 import { map, delay } from 'rxjs/operators';
 import { LocalDatabaseService } from './../../services/local/local-database.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-predio-salao',
@@ -107,7 +108,8 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   constructor(private alertCtrl: AlertController, @Inject(LOCALE_ID) private locale: string,
     private calendarioDatabaseService: CalendarioDatabaseService,
     private localDatabaseService: LocalDatabaseService,
-    private toastCtrl: ToastController) { }
+    private toastCtrl: ToastController,
+    private http: HttpClient) { }
 
   ngOnInit() {
 
@@ -236,6 +238,7 @@ export class PredioSalaoPage implements OnInit, OnChanges {
     this.event.apt = this.localDatabaseService.getUserApt();
     console.log(this.event);
     this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
+    this.sendEmail();
 
     // this.eventSource.push(this.validationBullshit(this.event));
 
@@ -417,6 +420,17 @@ export class PredioSalaoPage implements OnInit, OnChanges {
       showCloseButton: true,
       closeButtonText: "Fechar"
     }).then(toast => toast.present());
+  }
+
+  firebaseReply: string = "You'll see Firebase function response here";
+
+  sendEmail() {
+    this.http
+      .get(
+        'https://us-central1-spring-base-250217.cloudfunctions.net/sendMail')
+      .subscribe((data: any) => {
+        console.log(data);
+      });
   }
 
 

@@ -32,6 +32,16 @@ export class LocalDatabaseService {
     this.userApt = condominio;
   }
 
+  
+  sindEmail: string;
+
+  getSindEmail(){
+    return this.sindEmail;
+  }
+  setSindEmail(email: string){
+    this.sindEmail = email;
+  }
+
 
   constructor() { }
 }

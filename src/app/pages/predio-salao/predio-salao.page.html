@@ -92,7 +92,7 @@
       <ion-item *ngIf="isNightBlocked">
         <ion-label color="danger">O período da noite não está disponível!</ion-label>
       </ion-item>
-      <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == ''">
+      <ion-button fill="outline" expand="block" (click)="addEventToDB()" [disabled]="event.title == '' || isNightBlocked && event.night || isAfternoonBlocked && event.afternoon || isMorningBlocked && event.morning">
         Agendar
       </ion-button>
 

@@ -16,6 +16,7 @@ export interface User {
   notes: string,
   token: string,
   condominio: string,
+  sindEmail: string,
   date: any
 }
 

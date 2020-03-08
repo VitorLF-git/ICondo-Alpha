@@ -24,6 +24,7 @@ export class PredioPerfilPage implements OnInit {
     notes: '',
     token: 'notoken',
     condominio: '',
+    sindEmail:'',
     date: "no date"
 
   };

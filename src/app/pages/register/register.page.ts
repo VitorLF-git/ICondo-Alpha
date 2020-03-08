@@ -26,12 +26,14 @@ export class RegisterPage implements OnInit {
     notes: '',
     token: 'notoken',
     condominio: '',
+    sindEmail:'',
     date: "no date"
   };
 
   condominio: Condominio = {
     name: '',
     code: '',
+    email: '',
   }
 
    users: Observable<User[]>;
@@ -92,6 +94,7 @@ export class RegisterPage implements OnInit {
           this.condominio.code = a.code;
           this.condominio.name = a.name;
           this.user.condominio = a.name;
+          this.user.sindEmail = a.email;
           if(this.user.condominio != ''){
             this.condominioIsTrue = true;
           }

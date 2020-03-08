@@ -23,6 +23,7 @@ export class PortariaNovoAvisoPage implements OnInit {
     notes: '',
     token: 'notoken',
     condominio: '',
+    sindEmail:'',
     date: "no date"
   };
    users: Observable<User[]>;

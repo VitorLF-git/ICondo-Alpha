@@ -10,6 +10,7 @@ export interface Condominio {
   id?: string,
   name: string,
   code: string,
+  email: string,
 }
 
 
@@ -33,6 +34,13 @@ export class CondominioDatabaseService {
     return this.condominios;
   }
 
+  
+  getCondominiosByName(name): Observable<Condominio[]> {
+    this.getCondominiosFromDbByName(name);
+    return this.condominios;
+  }
+
+
   getAllCondominios(): Observable<Condominio[]> {
     this.getCondominiosByNothing();
     return this.condominios;
@@ -41,6 +49,21 @@ export class CondominioDatabaseService {
   private getCondominiosFromDbByCode(code) {
 
     this.condominioCollection = this.afs.collection<Condominio>('condominio', ref => ref.where('code', '==', code));
+    this.condominios = this.condominioCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  
+  private getCondominiosFromDbByName(name) {
+
+    this.condominioCollection = this.afs.collection<Condominio>('condominio', ref => ref.where('name', '==', name));
     this.condominios = this.condominioCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {

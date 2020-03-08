@@ -9,6 +9,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 
 import { HttpClient } from '@angular/common/http';
 import { LocalDatabaseService } from './../../services/local/local-database.service';
+import { CondominioDatabaseService, Condominio } from 'src/app/services/db-services/condominio-database.service';
 
 
 @Component({
@@ -31,12 +32,22 @@ export class PredioPage implements OnInit {
     notes: '',
     token: 'notoken',
     condominio: '',
+    sindEmail:'',
     date: "no date"
   };
+
+  
+  condominio: Condominio = {
+    name: '',
+    code: '',
+    email: '',
+  }
 
 
    runOnceGetToken: string = '1';
    users: Observable<User[]>;
+   condominios: Observable<Condominio[]>;
+
 
    userId: string = 'noid'
    localToken: string = 'notoken';
@@ -50,6 +61,7 @@ export class PredioPage implements OnInit {
     public plt: Platform,
     private http: HttpClient,
     private localDatabaseService: LocalDatabaseService,
+    private condominioDatabaseService: CondominioDatabaseService
   ) {
     this.plt.ready()
       .then(() => {
@@ -109,6 +121,7 @@ export class PredioPage implements OnInit {
     this.users = this.userDatabaseService.getUsers();
 
 
+
     this.getToken();
 
   }
@@ -159,6 +172,7 @@ export class PredioPage implements OnInit {
           console.log(this.localDatabaseService.getCurrentCondominio());
           this.localDatabaseService.setUserType(a.type);
           this.localDatabaseService.setUserApt(a.apt);
+          this.localDatabaseService.setSindEmail(a.sindEmail);
           const id = '1';
         });
       })).subscribe((val) => {

@@ -118,15 +118,15 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-exports.sendMail = functions.https.onRequest((req, res) => {
-    cors(req, res, () => {
+exports.sendEmail = functions.firestore
+    .document('calendario/{calId}')
+    .onCreate((snap, context) => {
 
         // getting dest email by query string
-        const dest = req.query.dest;
 
         const mailOptions = {
             from: '<contato.icondo@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
-            to: dest,
+            to: snap.data().email,
             subject: 'contact form message', // email subject
             html: `<h1>Order Confirmation</h1>` // email content in HTML
         };
@@ -136,8 +136,7 @@ exports.sendMail = functions.https.onRequest((req, res) => {
             if (erro) {
                 return res.send(erro.toString());
             }
-            return res.send(dest);
+            return res.send(snap.data().email);
         });
-    });
 });
 // dw9TNDOf9BA:APA91bFC6WLz2fl5kg-Vf_zDmhs1ROzR5O5w1Q7_lKw6ieLNYEfTHcJ2lmgjNkIDM31G0m-Q1LvRmd9BfIoBCC20keDC-Swh8EJeRKZvYBMWo5DjDqhGwrlMrwetohXfIsbgXs4ZZnUo

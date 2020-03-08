@@ -142,8 +142,8 @@ export class PredioSalaoPage implements OnInit, OnChanges {
             if (this.arrayResult3.find(x => x.includes(a.id))) {
             }
             else {
-            this.eventDeletionArray.push(eventCopy2);
-            this.arrayResult3.push(a.id);
+              this.eventDeletionArray.push(eventCopy2);
+              this.arrayResult3.push(a.id);
             }
 
           });
@@ -180,10 +180,10 @@ export class PredioSalaoPage implements OnInit, OnChanges {
             if (this.arrayResult2.find(x => x.includes(a.id))) {
             }
             else {
-              this.eventSource.push(this.validationBullshit(a));            
+              this.eventSource.push(this.validationBullshit(a));
               this.arrayResult2.push(a.id);
               console.log("event copy string: " + this.eventCopyString);
-              
+
               this.eventCopyString = this.validationBullshit(a).startTime.toUTCString();
               console.log("event copy string change: " + this.eventCopyString);
               console.log("Blocking array ");
@@ -236,9 +236,10 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   addEventToDB() {
 
     this.event.apt = this.localDatabaseService.getUserApt();
+    this.event.email = this.localDatabaseService.getSindEmail();
     console.log(this.event);
     this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
-    this.sendEmail();
+    // this.sendEmail();
 
     // this.eventSource.push(this.validationBullshit(this.event));
 
@@ -294,7 +295,7 @@ export class PredioSalaoPage implements OnInit, OnChanges {
   }
 
   // Create the right event format and reload source
- 
+
 
   // Change current month/week/day
   next() {
@@ -398,7 +399,7 @@ export class PredioSalaoPage implements OnInit, OnChanges {
 
     index = this.eventDeletionArray.findIndex(x => x.id === id);
     this.eventDeletionArray.splice(index, 1);
-    
+
     index2 = this.eventSource.findIndex(x => x.id === id);
     this.eventSource.splice(index2, 1);
 
@@ -424,14 +425,23 @@ export class PredioSalaoPage implements OnInit, OnChanges {
 
   firebaseReply: string = "You'll see Firebase function response here";
 
-  sendEmail() {
-    this.http
-      .get(
-        'https://us-central1-spring-base-250217.cloudfunctions.net/sendMail')
-      .subscribe((data: any) => {
-        console.log(data);
-      });
-  }
+  sindicoEmail: string = "";
+
+
+  // sendEmail() {
+  //   this.sindicoEmail = this.localDatabaseService.getSindEmail();
+  //   console.log (this.sindicoEmail);
+
+  //   let postData = {
+  //     "dest": this.sindicoEmail,
+  //   }
+  //   this.http
+  //     .post(
+  //       'https://us-central1-spring-base-250217.cloudfunctions.net/sendMail', postData)
+  //     .subscribe((data: any) => {
+  //       console.log(data);
+  //     });
+  // }
 
 
 }

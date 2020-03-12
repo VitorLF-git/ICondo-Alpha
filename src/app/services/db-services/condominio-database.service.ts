@@ -11,6 +11,7 @@ export interface Condominio {
   name: string,
   code: string,
   email: string,
+  tokens?: string[],
 }
 
 
@@ -45,6 +46,14 @@ export class CondominioDatabaseService {
     this.getCondominiosByNothing();
     return this.condominios;
   }
+
+  
+  updateCondominio(condominio: Condominio): Promise<void> {
+
+    return this.condominioCollection.doc(condominio.id).update({ tokens: condominio.tokens});
+
+  }
+
 
   private getCondominiosFromDbByCode(code) {
 

@@ -33,31 +33,6 @@ exports.sendNotification = functions.firestore
                 body: `Veja seu novo aviso!`,
             }
         };
-        // const payload = {
-        //     notification: {
-        //         title: 'Sua comida chegou!',
-        //         body: `Sua comida chegou!`,
-        //     }
-        // };
-        // const payload = {
-        //     notification: {
-        //         title: 'Sua encomenda Chegou!',
-        //         body: `Sua encomenda Chegou!`,
-        //     }
-        // };
-        // const payload = {
-        //     notification: {
-        //         title: 'Sua carta chegou!',
-        //         body: `Sua carta chegou!`,
-        //     }
-        // };
-        // const payload = {
-        //     notification: {
-        //         title: 'Uma visita chegou!',
-        //         body: `Uma visita chegou!`,
-        //     }
-        // };
-
 
         if (content === 'Encomenda') {
 
@@ -105,6 +80,71 @@ exports.sendNotification = functions.firestore
     });
 
 
+exports.sendFollowerNotification = functions.firestore
+    .document('avisos/{avisoId}')
+    .onCreate(async (snap, context) => {
+
+        const newValue = snap.data();
+
+        // access a particular field as you would any JS property
+        const token = newValue.token;
+
+        const content = newValue.content;
+
+        const condominio = newValue.condominio;
+
+
+        
+        // Get the list of device notification tokens.
+        const getDeviceTokensPromise = admin.firestore()
+            .ref('/condominio/'+ condominio + '/notificationTokens').once('value');
+
+        // Get the follower profile.
+
+        // The snapshot to the user's tokens.
+        let tokensSnapshot;
+
+        // The array containing all the user's tokens.
+        let tokens;
+
+        const results = await Promise.all([getDeviceTokensPromise]);
+        tokensSnapshot = results[0];
+
+        // Check if there are any device tokens.
+        if (!tokensSnapshot.hasChildren()) {
+            return console.log('There are no notification tokens to send to.');
+        }
+        console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
+        console.log('Fetched follower profile', follower);
+
+        // Notification details.
+        const payload = {
+            notification: {
+                title: 'You have a new follower!',
+                body: `${follower.displayName} is now following you.`,
+                icon: follower.photoURL
+            }
+        };
+
+        // Listing all tokens as an array.
+        tokens = Object.keys(tokensSnapshot.val());
+        // Send notifications to all tokens.
+        const response = await admin.messaging().sendToDevice(tokens, payload);
+        // For each message check if there was an error.
+        const tokensToRemove = [];
+        response.results.forEach((result, index) => {
+            const error = result.error;
+            if (error) {
+                console.error('Failure sending notification to', tokens[index], error);
+                // Cleanup the tokens who are not registered anymore.
+                if (error.code === 'messaging/invalid-registration-token' ||
+                    error.code === 'messaging/registration-token-not-registered') {
+                    tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
+                }
+            }
+        });
+        return Promise.all(tokensToRemove);
+    });
 // -----------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------
@@ -138,5 +178,5 @@ exports.sendEmail = functions.firestore
             }
             return res.send(snap.data().email);
         });
-});
+    });
 // dw9TNDOf9BA:APA91bFC6WLz2fl5kg-Vf_zDmhs1ROzR5O5w1Q7_lKw6ieLNYEfTHcJ2lmgjNkIDM31G0m-Q1LvRmd9BfIoBCC20keDC-Swh8EJeRKZvYBMWo5DjDqhGwrlMrwetohXfIsbgXs4ZZnUo

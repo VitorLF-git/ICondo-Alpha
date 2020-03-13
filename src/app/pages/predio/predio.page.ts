@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AuthenticateService } from 'src/app/services/authentication.service';
 import { User, UserDatabaseService } from 'src/app/services/db-services/user-database.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { FCM } from '@ionic-native/fcm/ngx';
@@ -32,25 +32,30 @@ export class PredioPage implements OnInit {
     notes: '',
     token: 'notoken',
     condominio: '',
-    sindEmail:'',
+    sindEmail: '',
     date: "no date"
   };
 
-  
+
   condominio: Condominio = {
     name: '',
     code: '',
     email: '',
+    tokens: [''],
   }
 
-
-   runOnceGetToken: string = '1';
-   users: Observable<User[]>;
-   condominios: Observable<Condominio[]>;
+  condominioSub: Subscription;
+  userSub: Subscription;
 
 
-   userId: string = 'noid'
-   localToken: string = 'notoken';
+  runOnceGetToken: string = '1';
+  users: Observable<User[]>;
+  condominios: Observable<Condominio[]>;
+
+
+  userId: string = 'noid'
+  localToken: string = 'notoken';
+  safetyFlag: string = '0';
 
   constructor(
     private navCtrl: NavController,
@@ -120,8 +125,6 @@ export class PredioPage implements OnInit {
 
     this.users = this.userDatabaseService.getUsers();
 
-
-
     this.getToken();
 
   }
@@ -162,18 +165,40 @@ export class PredioPage implements OnInit {
 
   mapUser() {
 
-    this.users.pipe(
+    this.userSub = this.users.pipe(
       map(actions => {
         actions.map(a => {
-          console.log("inside Pipe")
-          this.userId = a.id;
-          this.userDatabaseService.updateUserToken(this.userId, this.localToken);
-          this.localDatabaseService.setCurrentCondominio(a.condominio);
-          console.log(this.localDatabaseService.getCurrentCondominio());
-          this.localDatabaseService.setUserType(a.type);
-          this.localDatabaseService.setUserApt(a.apt);
-          this.localDatabaseService.setSindEmail(a.sindEmail);
-          const id = '1';
+          if (this.safetyFlag == '0') {
+            this.userId = a.id;
+            this.userDatabaseService.updateUserToken(this.userId, this.localToken);
+
+            this.localDatabaseService.setCurrentCondominio(a.condominio);
+            this.localDatabaseService.setUserType(a.type);
+            this.localDatabaseService.setUserApt(a.apt);
+            this.localDatabaseService.setSindEmail(a.sindEmail);
+
+            this.condominios = this.condominioDatabaseService.getCondominiosByName(a.condominio);
+
+            this.mapCondominio();
+            this.safetyFlag = "1";
+          }
+        });
+      })).subscribe((val) => {
+        console.log("subscribe")
+      }, (error) => {
+        console.log('Error: ', error);
+      });
+  }
+
+
+  mapCondominio() {
+    this.condominioSub = this.condominios.pipe(
+      map(actions => {
+        actions.map(a => {
+          this.condominio = a
+          this.condominio.tokens.push(this.localToken);
+          this.condominioDatabaseService.updateCondominio(this.condominio);
+          this.userSub.unsubscribe();
         });
       })).subscribe((val) => {
         console.log("subscribe")

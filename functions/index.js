@@ -87,7 +87,7 @@ exports.sendFollowerNotification = functions.firestore
         const newValue = snap.data();
 
         // access a particular field as you would any JS property
-        const token = newValue.token;
+        const tokens = newValue.tokens;
 
         const content = newValue.content;
 
@@ -95,39 +95,17 @@ exports.sendFollowerNotification = functions.firestore
 
 
         
-        // Get the list of device notification tokens.
-        const getDeviceTokensPromise = admin.firestore()
-            .ref('/condominio/'+ condominio + '/notificationTokens').once('value');
-
-        // Get the follower profile.
-
-        // The snapshot to the user's tokens.
-        let tokensSnapshot;
-
-        // The array containing all the user's tokens.
-        let tokens;
-
-        const results = await Promise.all([getDeviceTokensPromise]);
-        tokensSnapshot = results[0];
-
-        // Check if there are any device tokens.
-        if (!tokensSnapshot.hasChildren()) {
-            return console.log('There are no notification tokens to send to.');
-        }
-        console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
-        console.log('Fetched follower profile', follower);
 
         // Notification details.
         const payload = {
             notification: {
                 title: 'You have a new follower!',
-                body: `${follower.displayName} is now following you.`,
-                icon: follower.photoURL
+                body: `is now following you.`,
             }
         };
 
         // Listing all tokens as an array.
-        tokens = Object.keys(tokensSnapshot.val());
+        // tokens = Object.keys(tokensSnapshot.val());
         // Send notifications to all tokens.
         const response = await admin.messaging().sendToDevice(tokens, payload);
         // For each message check if there was an error.

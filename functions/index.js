@@ -81,7 +81,7 @@ exports.sendNotification = functions.firestore
 
 
 exports.sendFollowerNotification = functions.firestore
-    .document('avisos/{avisoId}')
+    .document('aviso/{avisoId}')
     .onCreate(async (snap, context) => {
 
         const newValue = snap.data();

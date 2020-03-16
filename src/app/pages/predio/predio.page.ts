@@ -180,7 +180,6 @@ export class PredioPage implements OnInit {
             this.condominios = this.condominioDatabaseService.getCondominiosByName(a.condominio);
 
             this.mapCondominio();
-            this.safetyFlag = "1";
           }
         });
       })).subscribe((val) => {
@@ -195,10 +194,18 @@ export class PredioPage implements OnInit {
     this.condominioSub = this.condominios.pipe(
       map(actions => {
         actions.map(a => {
+          if (this.safetyFlag == '0') {
           this.condominio = a
+          if(this.condominio.tokens.find(x => x.includes(this.localToken))){
+
+          }
+          else{
           this.condominio.tokens.push(this.localToken);
           this.condominioDatabaseService.updateCondominio(this.condominio);
-          this.userSub.unsubscribe();
+          }
+          this.localDatabaseService.setNotificationTokens(this.condominio.tokens);
+          this.safetyFlag = "1";
+        }
         });
       })).subscribe((val) => {
         console.log("subscribe")

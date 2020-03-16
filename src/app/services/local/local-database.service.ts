@@ -42,6 +42,17 @@ export class LocalDatabaseService {
     this.sindEmail = email;
   }
 
+  
+  notificationTokens: string[];
+
+  getNotificationTokens(){
+    return this.notificationTokens;
+  }
+  setNotificationTokens(tokens: string[]){
+    this.notificationTokens = tokens;
+  }
+
+
 
   constructor() { }
 }

@@ -17,18 +17,21 @@ export class AvisosNovoAvisoPage implements OnInit {
     content: "",
     category: "Condominio",
     condominio: '',
-    date: "no date"
+    date: "no date",
+    tokens: [''],
   }
 
   constructor(
-    private avisoDatabaseService: AvisoDatabaseService, 
-    private router: Router, 
+    private avisoDatabaseService: AvisoDatabaseService,
+    private router: Router,
     private toastCtrl: ToastController,
     private localDatabaseService: LocalDatabaseService,
-    ) { }
+  ) { }
 
   ngOnInit() {
+    this.aviso.tokens = this.localDatabaseService.getNotificationTokens();
     this.aviso.condominio = this.localDatabaseService.getCurrentCondominio();
+
   }
 
   createAviso() {

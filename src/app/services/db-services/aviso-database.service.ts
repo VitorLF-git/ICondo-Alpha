@@ -15,6 +15,7 @@ export interface Aviso {
   content: string,
   condominio: string,
   category: string,
+  tokens?: string[],
 }
 
 

@@ -23,11 +23,6 @@ const routes: Routes = [
               import('../pages/predio/predio.module').then(m => m.PredioPageModule)
           },
           {
-            path: 'info',
-            loadChildren: () =>
-              import('../pages/predio-perfil/predio-perfil.module').then(m => m.PredioPerfilPageModule)
-          },
-          {
             path: 'garagem',
             loadChildren: () =>
               import('../pages/predio-garagem/predio-garagem.module').then(m => m.PredioGaragemPageModule)

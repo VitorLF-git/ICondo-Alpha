@@ -99,8 +99,8 @@ exports.sendFollowerNotification = functions.firestore
         // Notification details.
         const payload = {
             notification: {
-                title: 'You have a new follower!',
-                body: `is now following you.`,
+                title: 'O seu condomínio postou um novo aviso!',
+                body: `Venha ver o que está acontecendo!`,
             }
         };
 

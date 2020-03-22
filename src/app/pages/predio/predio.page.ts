@@ -12,6 +12,10 @@ import { LocalDatabaseService } from './../../services/local/local-database.serv
 import { CondominioDatabaseService, Condominio } from 'src/app/services/db-services/condominio-database.service';
 
 
+
+// this.productStatus = this.product.subscribe(res => console.log(res.status)); NÃO PRESTE MUITA ATENÇÃO PENSEI QUE OS PROGRAMADORES DEVERIAM SE AJUDAR MAS ISSO NÃO É MUITO MENOR QUE O SEU NÃO SE PREOCUPE
+
+
 @Component({
   selector: 'app-predio',
   templateUrl: './predio.page.html',

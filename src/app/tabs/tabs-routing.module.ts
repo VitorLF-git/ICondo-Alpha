@@ -31,7 +31,15 @@ const routes: Routes = [
             path: 'salao',
             loadChildren: () =>
               import('../pages/predio-salao/predio-salao.module').then(m => m.PredioSalaoPageModule)
-          }
+          },
+          {
+            path: 'chamado',
+            loadChildren: () => import('../pages/predio-chamado/predio-chamado.module').then( m => m.PredioChamadoPageModule)
+          },
+          {
+            path: 'novo-chamado',
+            loadChildren: () => import('../pages/predio-chamado-novo-chamado/predio-chamado-novo-chamado.module').then( m => m.PredioChamadoNovoChamadoPageModule)
+          },
         ]
       },
       {

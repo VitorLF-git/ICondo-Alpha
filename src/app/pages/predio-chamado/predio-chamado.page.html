@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar color='primary'>
+    <ion-title>
+      Avisos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item color="none">
+    Avisos
+  </ion-item>
+  <ion-button color="primary" detail routerLink="/app/avisos/novo" routerDirection="forward">
+    <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+    Adicionar Aviso
+  </ion-button>
+  <ion-list>
+    <ion-card *ngFor="let aviso of (avisos | async)">
+      <ion-card-header>
+        <ion-card-subtitle>{{aviso.category}} - {{aviso.date.seconds * 1000 | date: 'HH' }}h {{aviso.date.seconds * 1000 | date: 'mm' }} min || Dia {{aviso.date.seconds * 1000 | date: 'dd-MM-yy' }}</ion-card-subtitle>
+        <ion-card-title>{{aviso.title}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        {{aviso.content}}
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+
+</ion-content>

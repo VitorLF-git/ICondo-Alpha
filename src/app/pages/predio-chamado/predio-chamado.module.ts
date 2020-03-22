@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DashboardPageRoutingModule } from './dashboard-routing.module';
+import { PredioChamadoPageRoutingModule } from './predio-chamado-routing.module';
 
-import { DashboardPage } from './dashboard.page';
+import { PredioChamadoPage } from './predio-chamado.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DashboardPageRoutingModule
+    PredioChamadoPageRoutingModule
   ],
-  declarations: [DashboardPage]
+  declarations: [PredioChamadoPage]
 })
-export class DashboardPageModule {}
+export class PredioChamadoPageModule {}

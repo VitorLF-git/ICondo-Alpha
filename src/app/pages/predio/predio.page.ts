@@ -180,6 +180,7 @@ export class PredioPage implements OnInit {
             this.localDatabaseService.setUserType(a.type);
             this.localDatabaseService.setUserApt(a.apt);
             this.localDatabaseService.setSindEmail(a.sindEmail);
+            console.log(a.sindEmail);
 
             this.condominios = this.condominioDatabaseService.getCondominiosByName(a.condominio);
 

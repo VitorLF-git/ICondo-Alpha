@@ -29,7 +29,7 @@
         <ion-label position="stacked">Apagar horários marcados</ion-label>
         <ion-select placeholder="Escolha uma data" [(ngModel)]="eventDeletionID">
           <ion-select-option *ngFor="let event of eventDeletionArray" value='{{event.id}}'>
-            {{event.startTime | date: 'dd-MMM-yyyy' }} - {{event.startTime | date: 'hh' }} hrs</ion-select-option>
+            {{event.startTime | date: 'dd-MMM-yyyy' }} - {{event.state}}</ion-select-option>
         </ion-select>
         <ion-item>
           <ion-button (click)="deleteEvent(eventDeletionID)" color="danger">

@@ -21,6 +21,8 @@ export interface EventCalendario {
   creationDate: any,
   apt: string,
   email?: string,
+  state?: string,
+
 }
 
 

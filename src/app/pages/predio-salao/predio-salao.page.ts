@@ -138,6 +138,7 @@ export class PredioSalaoPage implements OnInit, OnChanges {
               night: a.night,
               allDay: a.allDay,
               desc: a.desc,
+              state: a.state,
             }
             if (this.arrayResult3.find(x => x.includes(a.id))) {
             }
@@ -238,6 +239,17 @@ export class PredioSalaoPage implements OnInit, OnChanges {
     this.event.apt = this.localDatabaseService.getUserApt();
     this.event.email = this.localDatabaseService.getSindEmail();
     console.log(this.event);
+    if(this.event.morning == true){
+      this.event.state = "Manhã";
+    }
+    
+    if(this.event.afternoon == true){
+      this.event.state = "Tarde";
+    }
+    
+    if(this.event.night == true){
+      this.event.state = "Noite";
+    }
     this.calendarioDatabaseService.addCalendario(this.event, this.currentCondo);
     // this.sendEmail();
 
@@ -299,11 +311,13 @@ export class PredioSalaoPage implements OnInit, OnChanges {
 
   // Change current month/week/day
   next() {
+    // tslint:disable-next-line: no-string-literal
     var swiper = document.querySelector('.swiper-container')['swiper'];
     swiper.slideNext();
   }
 
   back() {
+    // tslint:disable-next-line: no-string-literal
     var swiper = document.querySelector('.swiper-container')['swiper'];
     swiper.slidePrev();
   }

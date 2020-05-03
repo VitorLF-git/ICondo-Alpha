@@ -142,11 +142,18 @@ exports.sendEmail = functions.firestore
 
         // getting dest email by query string
 
+        let mailSubject = 'Um morador agendou um novo horário da manhã para o salão de festas';
+
+        if(snap.data().morning === true){mailSubject = "Um morador agendou um novo horário da manhã para o salão de festas!"}
+        if(snap.data().afternoon === true){mailSubject = "Um morador agendou um novo horário da tarde para o salão de festas!"}
+        if(snap.data().night === true){mailSubject = "Um morador agendou um novo horário da noite para o salão de festas!"}
+
+
         const mailOptions = {
             from: '<contato.icondo@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
             to: snap.data().email,
-            subject: 'contact form message', // email subject
-            html: `<h1>Order Confirmation</h1>` // email content in HTML
+            subject: mailSubject, // email subject
+            html: '<h1>Abra o Aplicativo para saber mais!</h1>' // email content in HTML
         };
 
         // returning result

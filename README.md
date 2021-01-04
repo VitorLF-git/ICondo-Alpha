@@ -1,5 +1,5 @@
 # ICondo-Alpha
-Condominium controll app using Ionic 4 and Firebase
+Condominium control app using Ionic 4 and Firebase
 
 TO DO -
 

@@ -1,16 +1,6 @@
 # ICondo-Alpha
 Condominium control app using Ionic 4 and Firebase
 
-TO DO -
-
-CREATE WORKING LOGIN AND REGISTER PAGE ✓ -
-
-LOGIN PAGE REMEMBERS USER ✓ -
-
-CREATE FIRST ACCESS PAGE TO SAVE OTHER INFORMATION ABOUT USER (USE THE EMAIL AS REFERENCE) -
-
-QUERY THE INFORMATION FROM DB TO USER ✓ -
-
-CREATE DIFERENT USER TYPES - 'PORTEIRO' AND 'SINDICO' - MAKE THE APP SHOW DIFFERENT PAGES FOR THEM
-
-FINISH THE AVISOS AND PORTARIA PAGES (TO ADD NEW AVISO AND YADA YADA)
+ - Allows the lobby to inform the residents of arriving packages, people, or a custom alert.
+ - Allows you to schedule commom areas of the building, by using a calendar, and sends an email to the owner.
+ 
